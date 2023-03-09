@@ -17,6 +17,14 @@ export interface PostDB {
     updated_at: string
 }
 
+export interface VotesPostsDB {
+    user_id: string
+    post_id: string
+    upvote: number
+}
+
+
+
 export enum USER_ROLES {
     NORMAL = "NORMAL",
     ADMIN = "ADMIN"
