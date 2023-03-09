@@ -5,7 +5,7 @@ DROP TABLE users;
 -- query 1.2
 CREATE TABLE users(
     id TEXT PRIMARY KEY UNIQUE NOT NULL,
-    username TEXT NOT NULL,
+    username TEXT UNIQUE NOT NULL,
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
     role TEXT NOT NULL,
