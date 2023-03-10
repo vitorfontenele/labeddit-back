@@ -1,3 +1,4 @@
+-- Active: 1678488407513@@127.0.0.1@3306
 -- 1) TABLE users
 -- query 1.1
 DROP TABLE users;
