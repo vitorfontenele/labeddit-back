@@ -13,7 +13,7 @@ CREATE TABLE users(
 );
 
 -- ADMIN (inserido pelo Postman)
--- name: Carl Donovan
+-- username: carldonovan
 -- email: carldonovan@gmail.com
 -- password: passw1rd
 
@@ -24,10 +24,10 @@ WHERE email = "carldonovan@gmail.com";
 
 -- NORMAL USERS (inseridos via Postman)
 /*
-(name, email, password)
-("John Titor", "johntitor@gmail.com", "passw0rd")
-("Julia Schmidt", "juliaschmidt@gmail.com", "passw1rd")
-("Alice Grassi", "alicegrassi@gmail.com", "pasZw0rd")
+(username, email, password)
+("johntitor", "johntitor@gmail.com", "passw0rd")
+("juliaschmidt", "juliaschmidt@gmail.com", "passw1rd")
+("alicegrassi", "alicegrassi@gmail.com", "pasZw0rd")
 */
 
 -- query 1.4

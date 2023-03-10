@@ -23,9 +23,13 @@ export interface VotesPostsDB {
     upvote: number
 }
 
-
-
 export enum USER_ROLES {
     NORMAL = "NORMAL",
     ADMIN = "ADMIN"
+}
+
+export interface TokenPayload {
+    id: string,
+	username: string,
+    role: USER_ROLES
 }
