@@ -1,6 +1,7 @@
 import cors from "cors";
 import express from "express";
 import { userRouter } from "./router/userRouter";
+import { postRouter } from "./router/postRouter";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -12,6 +13,7 @@ app.use(express.json());
 
 // Rotas
 app.use("/users", userRouter);
+app.use("/posts", postRouter);
 
 // Porta
 app.listen(Number(process.env.PORT || 3003), () => {
