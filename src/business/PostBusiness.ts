@@ -144,7 +144,7 @@ export class PostBusiness {
 
         // No Reddit, o user pode sim dar upvote ou downvote no próprio post
 
-        const votesPostsDB = await this.votesPostsDatabase.findVoteByUserAndPostId(userId, postId);
+        const votesPostsDB = await this.votesPostsDatabase.findVotesByUserAndPostId(userId, postId);
 
         let deltaUpvotes = 0;
         let deltaDownvotes = 0;
@@ -225,5 +225,30 @@ export class PostBusiness {
 
         const updatedPostDB = updatedPost.toDBModel();
         await this.postDatabase.updatePostById(updatedPostDB, postId);
+    }
+
+    public async deletePostById(input: DeletePostInputDTO) : Promise<void>{
+        const { id , token } = input;
+
+        const payload = this.tokenManager.getPayload(token);
+        if (payload === null){
+            throw new BadRequestError("Token inválido");
+        }        
+
+        const postDB = await this.postDatabase.findPostById(id);
+        if (!postDB){
+            throw new NotFoundError("Não existe um post com esse 'id'");
+        }
+
+        // Somente admins poderão deletar posts
+        if (payload.role !== USER_ROLES.ADMIN){
+            throw new ForbidenError("Você não tem permissão para realizar essa ação");
+        }
+
+        const votesPostsDB = await this.votesPostsDatabase.findVotesByPostId(id);
+        if (votesPostsDB.length > 0){
+            await this.votesPostsDatabase.deleteVotesByPostId(id);
+        }
+        await this.postDatabase.deletePostById(id);
     }
 }
