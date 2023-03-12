@@ -1,6 +1,7 @@
 import express from "express";
 import { PostBusiness } from "../business/PostBusiness";
 import { PostController } from "../controller/PostController";
+import { CommentDatabase } from "../database/CommentDatabase";
 import { PostDatabase } from "../database/PostDatabase";
 import { UserDatabase } from "../database/UserDatabase";
 import { VotesPostsDatabase } from "../database/VotesPostsDatabase";
@@ -12,6 +13,7 @@ const postController = new PostController(
     new PostBusiness(
         new PostDatabase(),
         new UserDatabase(),
+        new CommentDatabase(),
         new VotesPostsDatabase(),
         new PostDTO(),
         new IdGenerator(),

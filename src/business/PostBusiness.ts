@@ -10,11 +10,13 @@ import { TokenManager } from "../services/TokenManager";
 import { ForbidenError } from "../errors/ForbiddenError";
 import { VotesPostsDatabase } from "../database/VotesPostsDatabase";
 import { VotesPosts } from "../models/VotesPosts";
+import { CommentDatabase } from "../database/CommentDatabase";
 
 export class PostBusiness {
     constructor(
         private postDatabase : PostDatabase,
         private userDatabase : UserDatabase,
+        private commentDatabase: CommentDatabase,
         private votesPostsDatabase : VotesPostsDatabase,
         private postDTO: PostDTO,
         private idGenerator: IdGenerator,
