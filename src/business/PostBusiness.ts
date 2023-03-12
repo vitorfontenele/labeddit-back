@@ -33,6 +33,7 @@ export class PostBusiness {
 
         const postsDB = await this.postDatabase.findPosts();
         const usersDB = await this.userDatabase.findUsers();
+        const commentsDB = await this.commentDatabase.findComments();
 
         const output = postsDB.map(postDB => {
             const post = new Post (
@@ -55,6 +56,12 @@ export class PostBusiness {
                 id: user.id,
                 username: user.username
             }
+        }
+
+        function getComments(postId: string){
+            const comments = commentsDB.filter(commentDB => commentDB.post_id === postId);
+
+            return comments;
         }
 
         return output;
