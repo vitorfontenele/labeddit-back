@@ -33,3 +33,14 @@ export interface TokenPayload {
 	username: string,
     role: USER_ROLES
 }
+
+export interface CommentDB {
+    id: string
+    post_id: string
+    creator_id: string
+    content: string
+    upvotes: number
+    downvotes: number
+    created_at: string
+    updated_at: string
+}
