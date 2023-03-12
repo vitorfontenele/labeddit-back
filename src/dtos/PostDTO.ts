@@ -33,6 +33,16 @@ export interface GetPostOutputDTO {
         id: string,
         username: string
     }
+    comments: {
+      id: string
+      content: string
+      upvotes: number
+      downvotes: number 
+      creator: {
+        id: string
+        username: string
+      }
+    }[]
 }
 
 export interface GetPostByIdInputDTO {
@@ -66,7 +76,8 @@ export class PostDTO {
             downvotes: post.getDownvotes(),
             createdAt: post.getCreatedAt(),
             updatedAt: post.getCreatedAt(),
-            creator: post.getCreator()
+            creator: post.getCreator(),
+            comments: post.getComments()
         }
         
         return result;
