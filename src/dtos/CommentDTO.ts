@@ -7,7 +7,52 @@ export interface CreateCommentInputDTO {
     postId: string
 }
 
+export interface GetCommentInputDTO {
+    token: string
+}
+
+export interface GetCommentOutputDTO {
+    id: string,
+    content: string,
+    upvotes: number,
+    downvotes: number,
+    createdAt: string,
+    updatedAt: string,
+    creator: {
+        id: string,
+        username: string
+    },
+    postId: string
+}
+
 export class CommentDTO {
+    getCommentInput = (token: unknown) : GetCommentInputDTO => {
+        if (typeof token !== "string"){
+            throw new BadRequestError ("Token inválido"); 
+        }
+
+        const result : GetCommentInputDTO = {
+            token
+        }
+
+        return result;
+    }
+
+    getCommentOutput = (comment: Comment) : GetCommentOutputDTO => {
+        const result : GetCommentOutputDTO = {
+            id: comment.getId(),
+            content: comment.getContent(),
+            upvotes: comment.getUpvotes(),
+            downvotes: comment.getDownvotes(),
+            createdAt: comment.getCreatedAt(),
+            updatedAt: comment.getUpdatedAt(),
+            creator: comment.getCreator(),
+            postId: comment.getPostId()
+        }
+
+        return result;
+    }
+
     createCommentInput = (content: unknown, token: unknown, postId: unknown) : CreateCommentInputDTO => {
         if (typeof content !== "string"){
             throw new BadRequestError("'content' deve ser uma string");

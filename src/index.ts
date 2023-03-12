@@ -15,7 +15,7 @@ app.use(express.json());
 // Rotas
 app.use("/users", userRouter);
 app.use("/posts", postRouter);
-app.use("/posts/:id/comments", commentRouter);
+app.use("/comments", commentRouter);
 
 // Porta
 app.listen(Number(process.env.PORT || 3003), () => {
