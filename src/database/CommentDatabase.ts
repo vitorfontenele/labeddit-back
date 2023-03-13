@@ -10,10 +10,10 @@ export class CommentDatabase extends BaseDatabase {
         return result;
     }
 
-    public async findCommentsByPostId(post_id: string){
-        const result : CommentDB[] | undefined = await BaseDatabase
+    public async findCommentById(id: string){
+        const [ result ] : CommentDB[] | undefined[] = await BaseDatabase
             .connection(CommentDatabase.TABLE_COMMENTS)
-            .where({ post_id });
+            .where({ id });
         return result;
     }
 
@@ -21,5 +21,12 @@ export class CommentDatabase extends BaseDatabase {
         await BaseDatabase
             .connection(CommentDatabase.TABLE_COMMENTS)
             .insert(newCommentDB);
+    }
+
+    public async updateCommentById(updatedCommentDB : CommentDB, id: string){
+        await BaseDatabase
+            .connection(CommentDatabase.TABLE_COMMENTS)
+            .update(updatedCommentDB)
+            .where({ id });
     }
 }

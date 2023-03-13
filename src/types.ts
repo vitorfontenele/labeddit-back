@@ -23,6 +23,12 @@ export interface VotesPostsDB {
     upvote: number
 }
 
+export interface VotesCommentsDB {
+    user_id: string
+    comment_id: string
+    upvote: number
+}
+
 export enum USER_ROLES {
     NORMAL = "NORMAL",
     ADMIN = "ADMIN"

@@ -25,6 +25,12 @@ export interface GetCommentOutputDTO {
     postId: string
 }
 
+export interface EditCommentVotesInputDTO {
+    id: string
+    upvote: boolean
+    token: string
+}
+
 export class CommentDTO {
     getCommentInput = (token: unknown) : GetCommentInputDTO => {
         if (typeof token !== "string"){
@@ -70,6 +76,25 @@ export class CommentDTO {
             content,
             token,
             postId
+        }
+
+        return result;
+    }
+
+    editCommentVotesInput = (id: string, upvote: unknown, token: unknown) => {
+        // id é string pois é path param
+
+        if (typeof upvote !== "boolean"){
+            throw new BadRequestError("'upvote' deve ser um boolean");
+        }
+        if (typeof token !== "string"){
+            throw new BadRequestError("Token inválido");
+        }
+
+        const result : EditCommentVotesInputDTO = {
+            id,
+            upvote,
+            token
         }
 
         return result;
