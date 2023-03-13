@@ -28,5 +28,5 @@ postRouter.get("/", postController.getPosts);
 postRouter.get("/:id", postController.getPostById);
 postRouter.post("/", postController.createPost);
 // postRouter.put("/:id", postController.updatePostById);
-postRouter.put("/:id/like", postController.updatePostVotesById);
+postRouter.put("/:id/vote", postController.updatePostVotesById);
 postRouter.delete("/:id", postController.deletePostById);
