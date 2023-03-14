@@ -1,5 +1,6 @@
 import { BadRequestError } from "../errors/BadRequestError";
 import { Comment } from "../models/Comment";
+import { VotesComments } from "../models/VotesComments";
 
 export interface CreateCommentInputDTO {
     content: string,
@@ -29,6 +30,16 @@ export interface EditCommentVotesInputDTO {
     id: string
     upvote: boolean
     token: string
+}
+
+export interface GetCommentVotesInputDTO {
+    token: string
+}
+
+export interface GetCommentVotesOutputDTO { 
+    userId: string
+    commentId: string
+    upvote: number
 }
 
 export class CommentDTO {
@@ -96,6 +107,28 @@ export class CommentDTO {
             upvote,
             token
         }
+
+        return result;
+    }
+
+    getCommentVotesInput = (token: unknown) : GetCommentVotesInputDTO => {
+        if (typeof token !== "string"){
+            throw new BadRequestError("Token inválido");
+        }
+
+        const result : GetCommentVotesInputDTO = {
+            token
+        }
+
+        return result;
+    }
+
+    getCommentVotesOutput = (commentVotes: VotesComments) : GetCommentVotesOutputDTO => {
+        const result : GetCommentVotesOutputDTO = {
+            userId: commentVotes.getUserId(),
+            commentId: commentVotes.getCommentId(),
+            upvote: commentVotes.getUpvote()
+        };
 
         return result;
     }

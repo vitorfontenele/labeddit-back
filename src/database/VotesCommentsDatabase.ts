@@ -12,6 +12,12 @@ export class VotesCommentsDatabase extends BaseDatabase {
         return result;
     }
 
+    public async findVotesComments(){
+        const result : VotesCommentsDB[] = await BaseDatabase
+            .connection(VotesCommentsDatabase.TABLE_VOTES_COMMENTS);
+        return result;
+    }
+
     public async createVote(newVoteDB : VotesCommentsDB ){
         await BaseDatabase
             .connection(VotesCommentsDatabase.TABLE_VOTES_COMMENTS)
