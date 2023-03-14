@@ -1,6 +1,6 @@
 import { PostDatabase } from "../database/PostDatabase";
 import { UserDatabase } from "../database/UserDatabase";
-import { CreatePostInputDTO , DeletePostInputDTO , EditPostVotesInputDTO , GetPostByIdInputDTO , GetPostInputDTO , GetPostOutputDTO, PostDTO } from "../dtos/PostDTO";
+import { CreatePostInputDTO , DeletePostInputDTO , EditPostVotesInputDTO , GetPostByIdInputDTO , GetPostInputDTO , GetPostOutputDTO, GetPostVotesInputDTO, PostDTO } from "../dtos/PostDTO";
 import { BadRequestError } from "../errors/BadRequestError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { Post } from "../models/Post";
@@ -116,6 +116,29 @@ export class PostBusiness {
         )
 
         const output = this.postDTO.getPostOutput(post);
+
+        return output;
+    }
+
+    public async getPostsVotes(input: GetPostVotesInputDTO) {
+        const { token } = input;
+
+        const payload = this.tokenManager.getPayload(token);
+        if (payload === null){
+            throw new BadRequestError("Token inválido");
+        }
+
+        const postsVotesDB = await this.votesPostsDatabase.findVotesPosts();
+
+        const output = postsVotesDB.map(postVotesDB => {
+            const postVotes = new VotesPosts(
+                postVotesDB.user_id, 
+                postVotesDB.post_id, 
+                postVotesDB.upvote
+            );
+            
+            return this.postDTO.getPostVotesOutput(postVotes);
+        });
 
         return output;
     }
