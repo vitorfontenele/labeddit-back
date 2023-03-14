@@ -29,6 +29,7 @@ WHERE email = "carldonovan@gmail.com";
 ("johntitor", "johntitor@gmail.com", "passw0rd")
 ("juliaschmidt", "juliaschmidt@gmail.com", "passw1rd")
 ("alicegrassi", "alicegrassi@gmail.com", "pasZw0rd")
+("thomasgrant", "thomasgrant@gmail.com", "paZZw1rd")
 */
 
 -- query 1.4
@@ -65,7 +66,7 @@ CREATE TABLE votes_posts (
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (post_id) REFERENCES posts(id),
     UNIQUE (user_id, post_id)
-)
+);
 
 -- query 3.3
 SELECT * FROM votes_posts;

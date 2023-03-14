@@ -11,7 +11,17 @@ export class Post {
         private creator: {
             id: string,
             username: string
-        }
+        },
+        private comments: {
+            id: string,
+            content: string,
+            upvotes: number,
+            downvotes: number,
+            creator: {
+                id: string,
+                username: string
+            }
+        }[]
     ){}
 
     public toDBModel() : PostDB {
@@ -86,5 +96,31 @@ export class Post {
         username: string
     }){
         this.creator = value;
+    }
+
+    public getComments() : {
+        id: string
+        content: string
+        upvotes: number
+        downvotes: number
+        creator: {
+            id: string
+            username: string
+        }
+    }[] {
+        return this.comments
+    }
+
+    public setComments(value: {
+        id: string
+        content: string
+        upvotes: number
+        downvotes: number
+        creator: {
+            id: string
+            username: string
+        }
+    }[]) : void {
+        this.comments = value;
     }
 }

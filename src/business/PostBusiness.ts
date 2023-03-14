@@ -4,7 +4,7 @@ import { CreatePostInputDTO , DeletePostInputDTO , EditPostVotesInputDTO , GetPo
 import { BadRequestError } from "../errors/BadRequestError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { Post } from "../models/Post";
-import { VotesPostsDB , UserDB , USER_ROLES } from "../types";
+import { VotesPostsDB , UserDB , USER_ROLES, CommentDB } from "../types";
 import { IdGenerator } from "../services/IdGenerator";
 import { TokenManager } from "../services/TokenManager";
 import { ForbidenError } from "../errors/ForbiddenError";
@@ -22,6 +22,35 @@ export class PostBusiness {
         private idGenerator: IdGenerator,
         private tokenManager: TokenManager
     ){}
+
+    public getCreator(userId: string, usersDB: UserDB[]){
+        const user = usersDB.find(userDB => userDB.id === userId) as UserDB;
+
+        return {
+            id: user.id,
+            username: user.username
+        }
+    }
+
+    public getComments(postId: string, usersDB: UserDB[], commentsDB: CommentDB[]){
+        let comments = commentsDB.filter(commentDB => commentDB.post_id === postId);
+            
+            const commentsMainInfo = comments.map(comment => {
+                const creatorData = this.getCreator(comment.creator_id, usersDB);
+
+                return {
+                    id: comment.id,
+                    content: comment.content,
+                    upvotes: comment.upvotes,
+                    downvotes: comment.downvotes,
+                    creator: {
+                        id: creatorData.id,
+                        username: creatorData.username 
+                    }
+            }})
+
+            return commentsMainInfo;
+    }
 
     public async getPosts(input: GetPostInputDTO) : Promise<GetPostOutputDTO[]>{
         const { token } = input;
@@ -43,26 +72,12 @@ export class PostBusiness {
                 postDB.downvotes,
                 postDB.created_at,
                 postDB.updated_at,
-                getCreator(postDB.creator_id)
+                this.getCreator(postDB.creator_id, usersDB),
+                this.getComments(postDB.id, usersDB, commentsDB)
             );
 
             return this.postDTO.getPostOutput(post);
         })             
-
-        function getCreator(userId : string){
-            const user = usersDB.find(userDB => userDB.id === userId) as UserDB;
-
-            return {
-                id: user.id,
-                username: user.username
-            }
-        }
-
-        function getComments(postId: string){
-            const comments = commentsDB.filter(commentDB => commentDB.post_id === postId);
-
-            return comments;
-        }
 
         return output;
     }
@@ -80,6 +95,8 @@ export class PostBusiness {
             throw new NotFoundError("Não foi encontrado um post com esse 'id'");
         }
 
+        const usersDB = await this.userDatabase.findUsers();
+        const commentsDB = await this.commentDatabase.findComments();
         const userId = postDB.creator_id;
         const userDB = await this.userDatabase.findUserById(userId);
         const username = userDB?.username;
@@ -94,7 +111,8 @@ export class PostBusiness {
             { 
               id: userId, 
               username: username as string
-            }
+            },
+            this.getComments(postDB.id, usersDB, commentsDB)
         )
 
         const output = this.postDTO.getPostOutput(post);
@@ -125,7 +143,8 @@ export class PostBusiness {
             {
                 id: payload.id, 
                 username: payload.username
-            }
+            },
+            []
         )
 
         const newPostDB = newPost.toDBModel();
@@ -229,7 +248,8 @@ export class PostBusiness {
             {
                 id: postDB.creator_id,
                 username: "" // não fará diferença
-            }
+            },
+            [] // não fará diferença
         )
 
         const updatedPostDB = updatedPost.toDBModel();
