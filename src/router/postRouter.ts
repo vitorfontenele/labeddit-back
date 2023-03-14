@@ -25,9 +25,9 @@ const postController = new PostController(
 export const postRouter = express.Router();
 
 postRouter.get("/", postController.getPosts);
+postRouter.get("/vote", postController.getVotesPosts);
 postRouter.get("/:id", postController.getPostById);
 postRouter.post("/", postController.createPost);
 // postRouter.put("/:id", postController.updatePostById);
-postRouter.get("/vote", postController.getVotesPosts);
 postRouter.put("/:id/vote", postController.updatePostVotesById);
 postRouter.delete("/:id", postController.deletePostById);
