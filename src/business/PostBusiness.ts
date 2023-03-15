@@ -1,6 +1,6 @@
 import { PostDatabase } from "../database/PostDatabase";
 import { UserDatabase } from "../database/UserDatabase";
-import { CreatePostInputDTO , DeletePostInputDTO , EditPostVoteInputDTO , GetPostByIdInputDTO , GetPostInputDTO , GetPostOutputDTO, GetPostVoteInputDTO, PostDTO } from "../dtos/PostDTO";
+import { CreatePostInputDTO , DeletePostInputDTO , EditPostInputDTO, EditPostVoteInputDTO , GetPostByIdInputDTO , GetPostInputDTO , GetPostOutputDTO, GetPostVoteInputDTO, PostDTO } from "../dtos/PostDTO";
 import { BadRequestError } from "../errors/BadRequestError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { Post } from "../models/Post";
@@ -175,6 +175,47 @@ export class PostBusiness {
 
         const output = "Post criado com sucesso";
         
+        return output;
+    }
+
+    public async updatePostById(input : EditPostInputDTO) : Promise<string>{
+        const { content , id , token } = input;
+
+        const payload = this.tokenManager.getPayload(token);
+        if (payload === null){
+            throw new BadRequestError("Token inválido");
+        }
+
+        const postDB = await this.postDatabase.findPostById(id);
+        if (!postDB){
+            throw new NotFoundError("Não foi encontrado um post com esse id");
+        }
+
+        if (payload.role === USER_ROLES.ADMIN){
+            throw new ForbidenError("Somente admins podem editar posts");
+        }
+
+        const updatedAt = (new Date()).toISOString();
+
+        const updatedPost = new Post(
+            id,
+            content,
+            postDB.upvotes,
+            postDB.downvotes,
+            postDB.created_at,
+            updatedAt,
+            {
+                id: postDB.creator_id,
+                username: "" // não fará diferença
+            },
+            [] // não fará diferença
+        )
+
+        const updatedPostDB = updatedPost.toDBModel();
+        await this.postDatabase.updatePostById(updatedPostDB, id);
+
+        const output = "Post atualizado com sucesso";
+
         return output;
     }
 
