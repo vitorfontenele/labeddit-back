@@ -297,10 +297,6 @@ export class PostBusiness {
             throw new ForbidenError("Você não tem permissão para realizar essa ação");
         }
 
-        const postVotesDB = await this.postVotesDatabase.findVotesByPostId(id);
-        if (postVotesDB.length > 0){
-            await this.postVotesDatabase.deleteVotesByPostId(id);
-        }
         await this.postDatabase.deletePostById(id);
     }
 }

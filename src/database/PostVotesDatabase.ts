@@ -12,14 +12,6 @@ export class PostVotesDatabase extends BaseDatabase {
         return result;
     }
 
-    public async findVotesByPostId(post_id: string){
-        const result : PostVoteDB[] = await BaseDatabase
-            .connection(PostVotesDatabase.TABLE_POST_VOTES)
-            .where({post_id});
-            
-        return result;
-    }
-
     public async findPostVotes(){
         const result : PostVoteDB[] = await BaseDatabase
             .connection(PostVotesDatabase.TABLE_POST_VOTES);
@@ -44,12 +36,5 @@ export class PostVotesDatabase extends BaseDatabase {
             .connection(PostVotesDatabase.TABLE_POST_VOTES)
             .del()
             .where({user_id, post_id});
-    }
-
-    public async deleteVotesByPostId(post_id: string){
-        await BaseDatabase
-            .connection(PostVotesDatabase.TABLE_POST_VOTES)
-            .del()
-            .where({post_id});
     }
 }
