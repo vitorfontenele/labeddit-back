@@ -191,7 +191,7 @@ export class PostBusiness {
             throw new NotFoundError("Não foi encontrado um post com esse id");
         }
 
-        if (payload.role === USER_ROLES.ADMIN){
+        if (payload.role !== USER_ROLES.ADMIN){
             throw new ForbidenError("Somente admins podem editar posts");
         }
 
