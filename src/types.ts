@@ -24,10 +24,10 @@ export interface PostVoteDB {
     vote: number
 }
 
-export interface VotesCommentsDB {
+export interface CommentVoteDB {
     user_id: string
     comment_id: string
-    upvote: number
+    vote: number
 }
 
 export enum USER_ROLES {

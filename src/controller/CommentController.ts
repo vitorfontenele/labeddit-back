@@ -28,12 +28,12 @@ export class CommentController {
         }
     }
 
-    public getVotesComments = async (req: Request, res: Response) => {
+    public getCommentVotes = async (req: Request, res: Response) => {
         try {
             const token = req.headers.authorization;
 
-            const input = this.commentDTO.getCommentVotesInput(token);
-            const output = await this.commentBusiness.getCommentsVotes(input);
+            const input = this.commentDTO.getCommentVoteInput(token);
+            const output = await this.commentBusiness.getCommentVotes(input);
 
             res.status(200).send(output);
         } catch (error) {
@@ -68,16 +68,16 @@ export class CommentController {
         }
     }
 
-    public updateCommentVotesById = async (req: Request, res: Response) => {
+    public updateCommentVoteById = async (req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            const upvote = req.body.upvote;
+            const vote = req.body.vote;
             const token = req.headers.authorization;
 
-            const input = this.commentDTO.editCommentVotesInput(id, upvote, token);
-            await this.commentBusiness.updateCommentVotesById(input);
+            const input = this.commentDTO.editCommentVoteInput(id, vote, token);
+            await this.commentBusiness.updateCommentVoteById(input);
 
-            res.status(200).send("Upvote atualizado com sucesso");
+            res.status(200).send("Vote atualizado com sucesso");
         } catch (error) {
             console.log(error)
 

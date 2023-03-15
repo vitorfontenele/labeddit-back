@@ -96,7 +96,7 @@ export class PostController {
             const input = this.postDTO.editPostVoteInput(id, vote, token);
             await this.postBusiness.updatePostVoteById(input);
 
-            res.status(200).send("Upvote atualizado com sucesso");
+            res.status(200).send("Vote atualizado com sucesso");
         } catch (error) {
             console.log(error)
 
