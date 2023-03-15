@@ -55,22 +55,22 @@ CREATE TABLE posts (
 -- query 2.3
 SELECT * FROM posts;
 
--- 3) TABLE votes_posts
+-- 3) TABLE post_votes
 -- query 3.1
-DROP TABLE votes_posts;
+DROP TABLE post_votes;
 
 -- query 3.2
-CREATE TABLE votes_posts (
+CREATE TABLE post_votes (
     user_id TEXT NOT NULL,
     post_id TEXT NOT NULL,
-    upvote INTEGER NOT NULL,
+    vote INTEGER NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (post_id) REFERENCES posts(id),
     UNIQUE (user_id, post_id)
 );
 
 -- query 3.3
-SELECT * FROM votes_posts;
+SELECT * FROM post_votes;
 
 -- 4) TABLE comments
 -- query 4.1
@@ -93,18 +93,18 @@ CREATE TABLE comments (
 -- query 4.3
 SELECT * FROM comments;
 
--- 5) TABLE votes_comments
+-- 5) TABLE comment_votes
 -- query 5.1
-DROP TABLE votes_comments;
+DROP TABLE comment_votes;
 
 -- query 5.2
-CREATE TABLE votes_comments (
+CREATE TABLE comment_votes (
     user_id TEXT NOT NULL,
     comment_id TEXT NOT NULL,
-    upvote INTEGER NOT NULL,
+    vote INTEGER NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (comment_id) REFERENCES comments(id)
 );
 
 -- query 5.3
-SELECT * FROM votes_comments;
+SELECT * FROM comment_votes;

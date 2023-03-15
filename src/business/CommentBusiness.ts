@@ -1,20 +1,20 @@
 import { CommentDatabase } from "../database/CommentDatabase";
 import { UserDatabase } from "../database/UserDatabase";
-import { VotesCommentsDatabase } from "../database/VotesCommentsDatabase";
-import { CommentDTO, CreateCommentInputDTO, EditCommentVotesInputDTO, GetCommentInputDTO, GetCommentOutputDTO, GetCommentVotesInputDTO } from "../dtos/CommentDTO";
+import { CommentVotesDatabase } from "../database/CommentVotesDatabase";
+import { CommentDTO, CreateCommentInputDTO, EditCommentVoteInputDTO, GetCommentInputDTO, GetCommentOutputDTO, GetCommentVoteInputDTO } from "../dtos/CommentDTO";
 import { BadRequestError } from "../errors/BadRequestError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { Comment } from "../models/Comment";
-import { VotesComments } from "../models/VotesComments";
+import { CommentVote } from "../models/CommentVote";
 import { IdGenerator } from "../services/IdGenerator";
 import { TokenManager } from "../services/TokenManager";
-import { UserDB, VotesCommentsDB } from "../types";
+import { UserDB, CommentVoteDB } from "../types";
 
 export class CommentBusiness{
     constructor(
         private commentDatabase: CommentDatabase,
         private userDatabase: UserDatabase,
-        private votesCommentsDatabase: VotesCommentsDatabase,
+        private commentVotesDatabase: CommentVotesDatabase,
         private commentDTO: CommentDTO,
         private idGenerator: IdGenerator,
         private tokenManager: TokenManager,
@@ -58,7 +58,7 @@ export class CommentBusiness{
         return output;
     }
 
-    public async getCommentsVotes(input: GetCommentVotesInputDTO) {
+    public async getCommentVotes(input: GetCommentVoteInputDTO) {
         const { token } = input;
 
         const payload = this.tokenManager.getPayload(token);
@@ -66,16 +66,16 @@ export class CommentBusiness{
             throw new BadRequestError("Token inválido");
         }
 
-        const commentsVotesDB = await this.votesCommentsDatabase.findVotesComments();
+        const commentVotesDB = await this.commentVotesDatabase.findCommentVotes();
 
-        const output = commentsVotesDB.map(commentVotesDB => {
-            const commentVotes = new VotesComments(
-                commentVotesDB.comment_id,
-                commentVotesDB.user_id,
-                commentVotesDB.upvote
+        const output = commentVotesDB.map(commentVoteDB => {
+            const commentVote = new CommentVote(
+                commentVoteDB.comment_id,
+                commentVoteDB.user_id,
+                commentVoteDB.vote
             );
 
-            return this.commentDTO.getCommentVotesOutput(commentVotes);
+            return this.commentDTO.getCommentVoteOutput(commentVote);
         });
 
         return output;
@@ -111,9 +111,9 @@ export class CommentBusiness{
         await this.commentDatabase.createComment(newCommentDB);
     }
 
-    public async updateCommentVotesById(input: EditCommentVotesInputDTO) : Promise<void>{
+    public async updateCommentVoteById(input: EditCommentVoteInputDTO) : Promise<void>{
         const { id , token } = input;
-        const updatedVote = input.upvote;
+        const updatedVote = input.vote;
 
         const payload = this.tokenManager.getPayload(token);
         if (payload === null){
@@ -132,40 +132,40 @@ export class CommentBusiness{
 
         // No Reddit, o user pode sim dar upvote ou downvote no próprio comentário
 
-        const votesCommentsDB = await this.votesCommentsDatabase.findVotesByUserAndCommentId(userId, commentId);
+        const commentVoteDB = await this.commentVotesDatabase.findVoteByUserAndCommentId(userId, commentId);
 
         let deltaUpvotes = 0;
         let deltaDownvotes = 0;
 
-        if (!votesCommentsDB){
+        if (!commentVoteDB){
             // Caso não exista nem upvote nem downvote do usuário no comment
-            const newVotesComments = new VotesComments(commentId, userId);
+            const newCommentVote = new CommentVote(commentId, userId);
 
             if (updatedVote){
                 // caso seja dado o upvote
-                newVotesComments.setUpvote(1);
+                newCommentVote.setVote(1);
                 deltaUpvotes = 1;
             } else {
                 // caso seja dado o downvote
-                newVotesComments.setUpvote(0);
+                newCommentVote.setVote(0);
                 deltaDownvotes = 1;
             }
 
-            const newVotesCommentsDB : VotesCommentsDB = {
-                user_id: newVotesComments.getUserId(),
-                comment_id: newVotesComments.getCommentId(),
-                upvote: newVotesComments.getUpvote()
+            const newCommentVoteDB : CommentVoteDB = {
+                user_id: newCommentVote.getUserId(),
+                comment_id: newCommentVote.getCommentId(),
+                vote: newCommentVote.getVote()
             }
 
-            await this.votesCommentsDatabase.createVote(newVotesCommentsDB);
+            await this.commentVotesDatabase.createVote(newCommentVoteDB);
         } else {
             // Caso já exista um upvote ou downvote do user no comment
-            const vote = votesCommentsDB.upvote;
+            const vote = commentVoteDB.vote;
 
             if ((updatedVote === Boolean(vote))){
                 // Usuário dá upvote num comment que já havia dado upvote
                 // ou dá downvote num comment que já havia dado downvote
-                await this.votesCommentsDatabase.deleteVoteByUserAndCommentId(userId, commentId);
+                await this.commentVotesDatabase.deleteVoteByUserAndCommentId(userId, commentId);
 
                 if (updatedVote){
                     // -1 upvote
@@ -178,16 +178,16 @@ export class CommentBusiness{
                 // Usuário dá upvote num comment que já havia dado downvote
                 // ou dá downvote num comment que já havia dado upvote
                 const updatedVote = Number(!vote);
-                const updatedVotesComments = new VotesComments(userId, commentId, updatedVote);
+                const updatedCommentVote = new CommentVote(userId, commentId, updatedVote);
 
-                const updatedVotesCommentsDB : VotesCommentsDB = {
-                    user_id: updatedVotesComments.getUserId(),
-                    comment_id: updatedVotesComments.getCommentId(),
-                    upvote: updatedVotesComments.getUpvote()
+                const updatedCommentVoteDB : CommentVoteDB = {
+                    user_id: updatedCommentVote.getUserId(),
+                    comment_id: updatedCommentVote.getCommentId(),
+                    vote: updatedCommentVote.getVote()
                 }
 
-                await this.votesCommentsDatabase.updateVoteByUserAndCommentId(
-                    updatedVotesCommentsDB,
+                await this.commentVotesDatabase.updateVoteByUserAndCommentId(
+                    updatedCommentVoteDB,
                     userId,
                     commentId
                 )

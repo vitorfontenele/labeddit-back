@@ -48,12 +48,12 @@ export class PostController {
         }
     }
 
-    public getVotesPosts = async (req: Request, res: Response) => {
+    public getPostVotes = async (req: Request, res: Response) => {
         try {
             const token = req.headers.authorization;
 
-            const input = this.postDTO.getPostVotesInput(token);
-            const output = await this.postBusiness.getPostsVotes(input);
+            const input = this.postDTO.getPostVoteInput(token);
+            const output = await this.postBusiness.getPostVotes(input);
 
             res.status(200).send(output);
         } catch (error) {
@@ -87,16 +87,16 @@ export class PostController {
         }
     }
 
-    public updatePostVotesById = async(req: Request, res: Response) => {
+    public updatePostVoteById = async(req: Request, res: Response) => {
         try {
             const id = req.params.id;
-            const upvote = req.body.upvote;
+            const vote = req.body.vote;
             const token = req.headers.authorization;
 
-            const input = this.postDTO.editPostVotesInput(id, upvote, token);
-            await this.postBusiness.updatePostVotesById(input);
+            const input = this.postDTO.editPostVoteInput(id, vote, token);
+            await this.postBusiness.updatePostVoteById(input);
 
-            res.status(200).send("Upvote atualizado com sucesso");
+            res.status(200).send("Vote atualizado com sucesso");
         } catch (error) {
             console.log(error)
 

@@ -1,6 +1,6 @@
 import { BadRequestError } from "../errors/BadRequestError";
 import { Comment } from "../models/Comment";
-import { VotesComments } from "../models/VotesComments";
+import { CommentVote} from "../models/CommentVote";
 
 export interface CreateCommentInputDTO {
     content: string,
@@ -26,20 +26,20 @@ export interface GetCommentOutputDTO {
     postId: string
 }
 
-export interface EditCommentVotesInputDTO {
+export interface EditCommentVoteInputDTO {
     id: string
-    upvote: boolean
+    vote: boolean
     token: string
 }
 
-export interface GetCommentVotesInputDTO {
+export interface GetCommentVoteInputDTO {
     token: string
 }
 
-export interface GetCommentVotesOutputDTO { 
+export interface GetCommentVoteOutputDTO { 
     userId: string
     commentId: string
-    upvote: number
+    vote: number
 }
 
 export class CommentDTO {
@@ -92,42 +92,42 @@ export class CommentDTO {
         return result;
     }
 
-    editCommentVotesInput = (id: string, upvote: unknown, token: unknown) => {
+    editCommentVoteInput = (id: string, vote: unknown, token: unknown) => {
         // id é string pois é path param
 
-        if (typeof upvote !== "boolean"){
-            throw new BadRequestError("'upvote' deve ser um boolean");
+        if (typeof vote !== "boolean"){
+            throw new BadRequestError("'vote' deve ser um boolean");
         }
         if (typeof token !== "string"){
             throw new BadRequestError("Token inválido");
         }
 
-        const result : EditCommentVotesInputDTO = {
+        const result : EditCommentVoteInputDTO = {
             id,
-            upvote,
+            vote,
             token
         }
 
         return result;
     }
 
-    getCommentVotesInput = (token: unknown) : GetCommentVotesInputDTO => {
+    getCommentVoteInput = (token: unknown) : GetCommentVoteInputDTO => {
         if (typeof token !== "string"){
             throw new BadRequestError("Token inválido");
         }
 
-        const result : GetCommentVotesInputDTO = {
+        const result : GetCommentVoteInputDTO = {
             token
         }
 
         return result;
     }
 
-    getCommentVotesOutput = (commentVotes: VotesComments) : GetCommentVotesOutputDTO => {
-        const result : GetCommentVotesOutputDTO = {
-            userId: commentVotes.getUserId(),
-            commentId: commentVotes.getCommentId(),
-            upvote: commentVotes.getUpvote()
+    getCommentVoteOutput = (commentVote: CommentVote) : GetCommentVoteOutputDTO => {
+        const result : GetCommentVoteOutputDTO = {
+            userId: commentVote.getUserId(),
+            commentId: commentVote.getCommentId(),
+            vote: commentVote.getVote()
         };
 
         return result;

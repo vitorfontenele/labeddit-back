@@ -1,15 +1,15 @@
 import { PostDatabase } from "../database/PostDatabase";
 import { UserDatabase } from "../database/UserDatabase";
-import { CreatePostInputDTO , DeletePostInputDTO , EditPostVotesInputDTO , GetPostByIdInputDTO , GetPostInputDTO , GetPostOutputDTO, GetPostVotesInputDTO, PostDTO } from "../dtos/PostDTO";
+import { CreatePostInputDTO , DeletePostInputDTO , EditPostVoteInputDTO , GetPostByIdInputDTO , GetPostInputDTO , GetPostOutputDTO, GetPostVoteInputDTO, PostDTO } from "../dtos/PostDTO";
 import { BadRequestError } from "../errors/BadRequestError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { Post } from "../models/Post";
-import { VotesPostsDB , UserDB , USER_ROLES, CommentDB } from "../types";
+import { PostVoteDB , UserDB , USER_ROLES, CommentDB } from "../types";
 import { IdGenerator } from "../services/IdGenerator";
 import { TokenManager } from "../services/TokenManager";
 import { ForbidenError } from "../errors/ForbiddenError";
-import { VotesPostsDatabase } from "../database/VotesPostsDatabase";
-import { VotesPosts } from "../models/VotesPosts";
+import { PostVotesDatabase } from "../database/PostVotesDatabase";
+import { PostVote } from "../models/PostVote";
 import { CommentDatabase } from "../database/CommentDatabase";
 
 export class PostBusiness {
@@ -17,7 +17,7 @@ export class PostBusiness {
         private postDatabase : PostDatabase,
         private userDatabase : UserDatabase,
         private commentDatabase: CommentDatabase,
-        private votesPostsDatabase : VotesPostsDatabase,
+        private postVotesDatabase : PostVotesDatabase,
         private postDTO: PostDTO,
         private idGenerator: IdGenerator,
         private tokenManager: TokenManager
@@ -120,7 +120,7 @@ export class PostBusiness {
         return output;
     }
 
-    public async getPostsVotes(input: GetPostVotesInputDTO) {
+    public async getPostVotes(input: GetPostVoteInputDTO) {
         const { token } = input;
 
         const payload = this.tokenManager.getPayload(token);
@@ -128,16 +128,16 @@ export class PostBusiness {
             throw new BadRequestError("Token inválido");
         }
 
-        const postsVotesDB = await this.votesPostsDatabase.findVotesPosts();
+        const postVotesDB = await this.postVotesDatabase.findPostVotes();
 
-        const output = postsVotesDB.map(postVotesDB => {
-            const postVotes = new VotesPosts(
-                postVotesDB.user_id, 
-                postVotesDB.post_id, 
-                postVotesDB.upvote
+        const output = postVotesDB.map(postVoteDB => {
+            const postVote = new PostVote(
+                postVoteDB.user_id, 
+                postVoteDB.post_id, 
+                postVoteDB.vote
             );
             
-            return this.postDTO.getPostVotesOutput(postVotes);
+            return this.postDTO.getPostVoteOutput(postVote);
         });
 
         return output;
@@ -174,9 +174,9 @@ export class PostBusiness {
         await this.postDatabase.createPost(newPostDB);
     }
 
-    public async updatePostVotesById(input : EditPostVotesInputDTO) : Promise<void>{
+    public async updatePostVoteById(input : EditPostVoteInputDTO) : Promise<void>{
         const { id , token } = input;
-        const updatedVote = input.upvote;
+        const updatedVote = input.vote;
 
         const payload = this.tokenManager.getPayload(token);
         if (payload === null){
@@ -195,40 +195,40 @@ export class PostBusiness {
 
         // No Reddit, o user pode sim dar upvote ou downvote no próprio post
 
-        const votesPostsDB = await this.votesPostsDatabase.findVotesByUserAndPostId(userId, postId);
+        const postVoteDB = await this.postVotesDatabase.findVoteByUserAndPostId(userId, postId);
 
         let deltaUpvotes = 0;
         let deltaDownvotes = 0;
 
-        if (!votesPostsDB){
+        if (!postVoteDB){
             // Caso nao exista nem upvote nem downvote do user no post
-            const newVotesPosts = new VotesPosts(userId, postId);
+            const newPostVote = new PostVote(userId, postId);
 
             if (updatedVote){
                 // caso seja dado o upvote
-                newVotesPosts.setUpvote(1);
+                newPostVote.setVote(1);
                 deltaUpvotes = 1;
             } else {
                 // caso seja dado downvote
-                newVotesPosts.setUpvote(0);
+                newPostVote.setVote(0);
                 deltaDownvotes = 1;
             }
 
-            const newVotesPostsDB : VotesPostsDB = {
-                user_id : newVotesPosts.getUserId(),
-                post_id : newVotesPosts.getPostId(),
-                upvote : newVotesPosts.getUpvote()
+            const newPostVoteDB : PostVoteDB = {
+                user_id : newPostVote.getUserId(),
+                post_id : newPostVote.getPostId(),
+                vote : newPostVote.getVote()
             }
 
-            await this.votesPostsDatabase.createVote(newVotesPostsDB);
+            await this.postVotesDatabase.createVote(newPostVoteDB);
         } else {
             // Caso já exista um upvote ou downvote do user no post
-            const vote = votesPostsDB.upvote;
+            const vote = postVoteDB.vote;
 
             if ((updatedVote === Boolean(vote))){
                 // Usuário dá upvote num post que já havia dado upvote
                 // ou dá downvote num post que já havia dado downvote
-                await this.votesPostsDatabase.deleteVoteByUserAndPostId(userId, postId);
+                await this.postVotesDatabase.deleteVoteByUserAndPostId(userId, postId);
 
                 if (updatedVote){
                     // -1 upvote
@@ -242,16 +242,16 @@ export class PostBusiness {
                 // Usuário dá upvote num post que já havia dado downvote
                 // ou dá downvote num post que já havia dado upvote
                 const updatedVote = Number(!vote);
-                const updatedVotesPosts = new VotesPosts(userId, postId, updatedVote);
+                const updatedPostVote = new PostVote(userId, postId, updatedVote);
 
-                const updatedVotesPostsDB : VotesPostsDB = {
-                    user_id: updatedVotesPosts.getUserId(),
-                    post_id: updatedVotesPosts.getPostId(),
-                    upvote: updatedVotesPosts.getUpvote()
+                const updatedPostVoteDB : PostVoteDB = {
+                    user_id: updatedPostVote.getUserId(),
+                    post_id: updatedPostVote.getPostId(),
+                    vote: updatedPostVote.getVote()
                 }
 
-                await this.votesPostsDatabase.updateVoteByUserAndPostId(
-                    updatedVotesPostsDB,
+                await this.postVotesDatabase.updateVoteByUserAndPostId(
+                    updatedPostVoteDB,
                     userId,
                     postId
                 );
@@ -297,9 +297,9 @@ export class PostBusiness {
             throw new ForbidenError("Você não tem permissão para realizar essa ação");
         }
 
-        const votesPostsDB = await this.votesPostsDatabase.findVotesByPostId(id);
-        if (votesPostsDB.length > 0){
-            await this.votesPostsDatabase.deleteVotesByPostId(id);
+        const postVotesDB = await this.postVotesDatabase.findVotesByPostId(id);
+        if (postVotesDB.length > 0){
+            await this.postVotesDatabase.deleteVotesByPostId(id);
         }
         await this.postDatabase.deletePostById(id);
     }
