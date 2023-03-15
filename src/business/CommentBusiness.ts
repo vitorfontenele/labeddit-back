@@ -1,7 +1,7 @@
 import { CommentDatabase } from "../database/CommentDatabase";
 import { UserDatabase } from "../database/UserDatabase";
 import { VotesCommentsDatabase } from "../database/VotesCommentsDatabase";
-import { CommentDTO, CreateCommentInputDTO, EditCommentVotesInputDTO, GetCommentInputDTO, GetCommentOutputDTO } from "../dtos/CommentDTO";
+import { CommentDTO, CreateCommentInputDTO, EditCommentVotesInputDTO, GetCommentInputDTO, GetCommentOutputDTO, GetCommentVotesInputDTO } from "../dtos/CommentDTO";
 import { BadRequestError } from "../errors/BadRequestError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { Comment } from "../models/Comment";
@@ -54,6 +54,29 @@ export class CommentBusiness{
                 username: user.username
             }
         }
+
+        return output;
+    }
+
+    public async getCommentsVotes(input: GetCommentVotesInputDTO) {
+        const { token } = input;
+
+        const payload = this.tokenManager.getPayload(token);
+        if (payload === null){
+            throw new BadRequestError("Token inválido");
+        }
+
+        const commentsVotesDB = await this.votesCommentsDatabase.findVotesComments();
+
+        const output = commentsVotesDB.map(commentVotesDB => {
+            const commentVotes = new VotesComments(
+                commentVotesDB.comment_id,
+                commentVotesDB.user_id,
+                commentVotesDB.upvote
+            );
+
+            return this.commentDTO.getCommentVotesOutput(commentVotes);
+        });
 
         return output;
     }

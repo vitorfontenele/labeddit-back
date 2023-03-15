@@ -11,6 +11,7 @@ export interface CreateUserInputDTO {
 
 export interface CreateUserOutputDTO {
     token: string
+    userId: string
 }
 
 export interface GetUserInputDTO {
@@ -36,6 +37,7 @@ export interface LoginUserInputDTO {
 
 export interface LoginUserOutputDTO {
     token: string
+    userId: string
 }
 
 export class UserDTO {
@@ -106,9 +108,10 @@ export class UserDTO {
         return result;
     }
 
-    createUserOutput(token : string) : CreateUserOutputDTO {
+    createUserOutput(token : string, userId: string) : CreateUserOutputDTO {
         const result : CreateUserOutputDTO = {
-            token
+            token,
+            userId
         }
 
         return result;
@@ -131,9 +134,10 @@ export class UserDTO {
         return result;
     }
 
-    loginUserOutput(token : string) : LoginUserOutputDTO{
+    loginUserOutput(token : string, userId: string) : LoginUserOutputDTO{
         const result : LoginUserOutputDTO = {
-            token
+            token,
+            userId
         }
 
         return result;

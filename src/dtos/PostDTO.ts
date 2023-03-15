@@ -1,5 +1,6 @@
 import { BadRequestError } from "../errors/BadRequestError";
 import { Post } from "../models/Post";
+import { VotesPosts } from "../models/VotesPosts";
 
 export interface CreatePostInputDTO {
     content : string
@@ -53,6 +54,16 @@ export interface GetPostByIdInputDTO {
 export interface DeletePostInputDTO{
     id: string
     token: string
+}
+
+export interface GetPostVotesInputDTO {
+    token: string
+}
+
+export interface GetPostVotesOutputDTO {
+    userId: string
+    postId: string
+    upvote: number
 }
 
 export class PostDTO {
@@ -129,6 +140,28 @@ export class PostDTO {
             id,
             content,
             token
+        }
+
+        return result;
+    }
+
+    getPostVotesInput = (token : unknown) : GetPostVotesInputDTO => {
+        if (typeof token !== "string"){
+            throw new BadRequestError("Token inválido");
+        }
+
+        const result : GetPostVotesInputDTO = {
+            token
+        }
+
+        return result;
+    }
+
+    getPostVotesOutput = (postVotes : VotesPosts) : GetPostVotesOutputDTO => {
+        const result : GetPostVotesOutputDTO = {
+            userId: postVotes.getUserId(),
+            postId: postVotes.getPostId(),
+            upvote: postVotes.getUpvote()
         }
 
         return result;

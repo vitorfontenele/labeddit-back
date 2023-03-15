@@ -99,7 +99,9 @@ export class UserBusiness {
         const newUserDB = newUser.toDBModel();
         await this.userDatabase.createUser(newUserDB);
 
-        const output = this.userDTO.createUserOutput(token)
+        const userId = newUser.getId();
+
+        const output = this.userDTO.createUserOutput(token, userId);
 
         return output;
     }
@@ -135,8 +137,11 @@ export class UserBusiness {
 
         const token = this.tokenManager.createToken(payload);
 
+        const userId = user.getId();
+
         const output : LoginUserOutputDTO = {
-            token
+            token,
+            userId
         }
 
         return output;
