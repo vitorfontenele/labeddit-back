@@ -1,6 +1,6 @@
 import { PostDatabase } from "../database/PostDatabase";
 import { UserDatabase } from "../database/UserDatabase";
-import { CreatePostInputDTO , DeletePostInputDTO , EditPostVoteInputDTO , GetPostByIdInputDTO , GetPostInputDTO , GetPostOutputDTO, GetPostVoteInputDTO, PostDTO } from "../dtos/PostDTO";
+import { CreatePostInputDTO , DeletePostInputDTO , EditPostInputDTO, EditPostVoteInputDTO , GetPostByIdInputDTO , GetPostInputDTO , GetPostOutputDTO, GetPostVoteInputDTO, PostDTO } from "../dtos/PostDTO";
 import { BadRequestError } from "../errors/BadRequestError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { Post } from "../models/Post";
@@ -143,7 +143,7 @@ export class PostBusiness {
         return output;
     }
 
-    public async createPost(input : CreatePostInputDTO) : Promise<void>{
+    public async createPost(input : CreatePostInputDTO) : Promise<string>{
         const { content , token } = input;
 
         const payload = this.tokenManager.getPayload(token);
@@ -172,9 +172,54 @@ export class PostBusiness {
 
         const newPostDB = newPost.toDBModel();
         await this.postDatabase.createPost(newPostDB);
+
+        const output = "Post criado com sucesso";
+        
+        return output;
     }
 
-    public async updatePostVoteById(input : EditPostVoteInputDTO) : Promise<void>{
+    public async updatePostById(input : EditPostInputDTO) : Promise<string>{
+        const { content , id , token } = input;
+
+        const payload = this.tokenManager.getPayload(token);
+        if (payload === null){
+            throw new BadRequestError("Token inválido");
+        }
+
+        const postDB = await this.postDatabase.findPostById(id);
+        if (!postDB){
+            throw new NotFoundError("Não foi encontrado um post com esse id");
+        }
+
+        if (payload.role !== USER_ROLES.ADMIN){
+            throw new ForbidenError("Somente admins podem editar posts");
+        }
+
+        const updatedAt = (new Date()).toISOString();
+
+        const updatedPost = new Post(
+            id,
+            content,
+            postDB.upvotes,
+            postDB.downvotes,
+            postDB.created_at,
+            updatedAt,
+            {
+                id: postDB.creator_id,
+                username: "" // não fará diferença
+            },
+            [] // não fará diferença
+        )
+
+        const updatedPostDB = updatedPost.toDBModel();
+        await this.postDatabase.updatePostById(updatedPostDB, id);
+
+        const output = "Post atualizado com sucesso";
+
+        return output;
+    }
+
+    public async updatePostVoteById(input : EditPostVoteInputDTO) : Promise<string>{
         const { id , token } = input;
         const updatedVote = input.vote;
 
@@ -277,9 +322,12 @@ export class PostBusiness {
 
         const updatedPostDB = updatedPost.toDBModel();
         await this.postDatabase.updatePostById(updatedPostDB, postId);
+
+        const output = "Vote atualizado com sucesso";
+        return output;
     }
 
-    public async deletePostById(input: DeletePostInputDTO) : Promise<void>{
+    public async deletePostById(input: DeletePostInputDTO) : Promise<string>{
         const { id , token } = input;
 
         const payload = this.tokenManager.getPayload(token);
@@ -297,10 +345,10 @@ export class PostBusiness {
             throw new ForbidenError("Você não tem permissão para realizar essa ação");
         }
 
-        const postVotesDB = await this.postVotesDatabase.findVotesByPostId(id);
-        if (postVotesDB.length > 0){
-            await this.postVotesDatabase.deleteVotesByPostId(id);
-        }
         await this.postDatabase.deletePostById(id);
+
+        const output = "Post deletado com sucesso";
+
+        return output;
     }
 }

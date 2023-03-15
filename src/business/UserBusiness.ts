@@ -1,6 +1,7 @@
 import { UserDatabase } from "../database/UserDatabase";
-import { CreateUserInputDTO, CreateUserOutputDTO, GetUserByIdInputDTO, GetUserInputDTO, GetUserOutputDTO, LoginUserInputDTO, LoginUserOutputDTO, UserDTO } from "../dtos/UserDTO";
+import { CreateUserInputDTO, CreateUserOutputDTO, DeleteUserInputDTO, GetUserByIdInputDTO, GetUserInputDTO, GetUserOutputDTO, LoginUserInputDTO, LoginUserOutputDTO, UserDTO } from "../dtos/UserDTO";
 import { BadRequestError } from "../errors/BadRequestError";
+import { ForbidenError } from "../errors/ForbiddenError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { User } from "../models/User";
 import { HashManager } from "../services/HashManager";
@@ -74,14 +75,14 @@ export class UserBusiness {
     public async createUser(input : CreateUserInputDTO) : Promise<CreateUserOutputDTO>{
         const { username , email , password , receiveEmails } = input;
 
-        const userDBEmail = await this.userDatabase.findUserByEmail(email);
-        if (userDBEmail){
-            throw new BadRequestError("Já existe um user com esse 'email'");
-        }
-
         const userDBUsername = await this.userDatabase.findUserByUsername(username);
         if (userDBUsername){
             throw new BadRequestError("Já existe um user com esse 'username'");
+        }
+
+        const userDBEmail = await this.userDatabase.findUserByEmail(email);
+        if (userDBEmail){
+            throw new BadRequestError("Já existe um user com esse 'email'");
         }
 
         const id = this.idGenerator.generate();
@@ -147,6 +148,31 @@ export class UserBusiness {
             token,
             userId
         }
+
+        return output;
+    }
+
+    public async deleteUserById(input : DeleteUserInputDTO) : Promise<string>{
+        const { token } = input;
+        const idToDelete = input.id;
+
+        const payload = this.tokenManager.getPayload(token);
+        if (payload === null){
+            throw new BadRequestError("Token inválido");
+        }
+
+        if (payload.role !== USER_ROLES.ADMIN){
+            throw new ForbidenError("Apenas admins podem deletar usuários");
+        }
+
+        const userDB = await this.userDatabase.findUserById(idToDelete);
+        if (!userDB){
+            throw new NotFoundError("Não foi encontrado um user com esse 'id'");
+        }
+
+        await this.userDatabase.deleteUserById(idToDelete);
+
+        const output = "User deletado com sucesso";
 
         return output;
     }

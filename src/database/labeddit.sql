@@ -49,7 +49,7 @@ CREATE TABLE posts (
     downvotes INTEGER DEFAULT(0),
     created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL,
-    FOREIGN KEY (creator_id) REFERENCES users(id)
+    FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- query 2.3
@@ -64,8 +64,8 @@ CREATE TABLE post_votes (
     user_id TEXT NOT NULL,
     post_id TEXT NOT NULL,
     vote INTEGER NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (post_id) REFERENCES posts(id),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
     UNIQUE (user_id, post_id)
 );
 
