@@ -6,6 +6,7 @@ export class User {
         private username : string,
         private email : string,
         private password : string,
+        private receiveEmails: number,
         private role : USER_ROLES,
         private createdAt : string
     ){}
@@ -16,6 +17,7 @@ export class User {
             username: this.username,
             email: this.email,
             password: this.password,
+            receive_emails: this.receiveEmails,
             role: this.role,
             created_at: this.createdAt
         }
@@ -51,6 +53,14 @@ export class User {
 
     public setPassword(value : string) : void {
         this.password = value;
+    }
+
+    public getReceiveEmails() : number {
+        return this.receiveEmails;
+    }
+
+    public setReceiveEmails(value: number) : void {
+        this.receiveEmails = value;
     }
 
     public getRole() : USER_ROLES {

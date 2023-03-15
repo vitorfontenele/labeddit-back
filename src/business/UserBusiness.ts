@@ -32,8 +32,10 @@ export class UserBusiness {
                 userDB.username,
                 userDB.email,
                 userDB.password,
+                userDB.receive_emails,
                 userDB.role,
-                userDB.created_at)
+                userDB.created_at
+            )
 
             return this.userDTO.getUserOutput(user)
         });
@@ -59,6 +61,7 @@ export class UserBusiness {
             userDB.username,
             userDB.email,
             userDB.password,
+            userDB.receive_emails,
             userDB.role,
             userDB.created_at
         );
@@ -69,7 +72,7 @@ export class UserBusiness {
     }
 
     public async createUser(input : CreateUserInputDTO) : Promise<CreateUserOutputDTO>{
-        const { username , email , password } = input;
+        const { username , email , password , receiveEmails } = input;
 
         const userDBEmail = await this.userDatabase.findUserByEmail(email);
         if (userDBEmail){
@@ -86,7 +89,7 @@ export class UserBusiness {
         const role = USER_ROLES.NORMAL;
         const hashedPassword = await this.hashManager.hash(password);
 
-        const newUser = new User (id, username, email, hashedPassword, role, createdAt);
+        const newUser = new User (id, username, email, hashedPassword, receiveEmails, role, createdAt);
 
         const tokenPayload : TokenPayload = {
             id: newUser.getId(),
@@ -125,6 +128,7 @@ export class UserBusiness {
             userDB.username,
             userDB.email,
             userDB.password,
+            userDB.receive_emails,
             userDB.role,
             userDB.created_at
         )
