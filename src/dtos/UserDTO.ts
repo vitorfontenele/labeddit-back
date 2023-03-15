@@ -41,6 +41,11 @@ export interface LoginUserOutputDTO {
     userId: string
 }
 
+export interface DeleteUserInputDTO {
+    token: string
+    id: string
+}
+
 export class UserDTO {
     getUserInput(token : unknown){
         if (typeof token !== "string"){
@@ -144,6 +149,20 @@ export class UserDTO {
         const result : LoginUserOutputDTO = {
             token,
             userId
+        }
+
+        return result;
+    }
+
+    deleteUserInput(token: unknown, id: string){
+        // id é path param
+        if (typeof token !== "string"){
+            throw new BadRequestError("Token inválido");
+        }
+
+        const result : DeleteUserInputDTO = {
+            token,
+            id
         }
 
         return result;

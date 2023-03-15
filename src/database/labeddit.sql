@@ -49,7 +49,7 @@ CREATE TABLE posts (
     downvotes INTEGER DEFAULT(0),
     created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL,
-    FOREIGN KEY (creator_id) REFERENCES users(id)
+    FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- query 2.3

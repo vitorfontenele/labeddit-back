@@ -37,4 +37,11 @@ export class UserDatabase extends BaseDatabase {
             .connection(UserDatabase.TABLE_USERS)
             .insert(newUserDB);
     }
+
+    public async deleteUserById(id: string){
+        await BaseDatabase
+            .connection(UserDatabase.TABLE_USERS)
+            .del()
+            .where({ id });
+    }
 }
