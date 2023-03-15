@@ -50,9 +50,9 @@ export class UserController {
 
     public createUser = async(req: Request, res: Response) => {
         try {
-            const { username , email , password } = req.body;
+            const { username , email , password , receiveEmails } = req.body;
 
-            const input = this.userDTO.createUserInput(username, email, password);
+            const input = this.userDTO.createUserInput(username, email, password, receiveEmails);
             const output = await this.userBusiness.createUser(input);
 
             res.status(201).send(output);

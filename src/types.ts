@@ -3,6 +3,7 @@ export interface UserDB {
     username: string
     email: string
     password: string
+    receive_emails: number
     role: USER_ROLES
     created_at: string
 }
