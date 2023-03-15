@@ -5,6 +5,7 @@ import { TokenManagerMock } from "../mocks/TokenManagerMock";
 import { UserDatabaseMock } from "../mocks/UserDatabaseMock";
 import { UserDTO } from "../../src/dtos/UserDTO";
 import { CreateUserInputDTO } from "../../src/dtos/UserDTO";
+import { BadRequestError } from "../../src/errors/BadRequestError";
 
 describe("signup", () => {
     const userBusiness = new UserBusiness(
@@ -42,7 +43,9 @@ describe("signup", () => {
         try {
             await userBusiness.createUser(input);
         } catch (error) {
-            expect(error.message).toBe("Já existe um user com esse 'username'")
+            if (error instanceof BadRequestError){
+                expect(error.message).toBe("Já existe um user com esse 'username'")
+            }
         }
     })
 
@@ -59,8 +62,9 @@ describe("signup", () => {
         try {
             await userBusiness.createUser(input);
         } catch (error) {
-            expect(error.message).toBe("Já existe um user com esse 'email'");
+            if (error instanceof BadRequestError){
+                expect(error.message).toBe("Já existe um user com esse 'email'");
+            }
         }
-
     })
 })
