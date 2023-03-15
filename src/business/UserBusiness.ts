@@ -74,14 +74,14 @@ export class UserBusiness {
     public async createUser(input : CreateUserInputDTO) : Promise<CreateUserOutputDTO>{
         const { username , email , password , receiveEmails } = input;
 
-        const userDBEmail = await this.userDatabase.findUserByEmail(email);
-        if (userDBEmail){
-            throw new BadRequestError("Já existe um user com esse 'email'");
-        }
-
         const userDBUsername = await this.userDatabase.findUserByUsername(username);
         if (userDBUsername){
             throw new BadRequestError("Já existe um user com esse 'username'");
+        }
+
+        const userDBEmail = await this.userDatabase.findUserByEmail(email);
+        if (userDBEmail){
+            throw new BadRequestError("Já existe um user com esse 'email'");
         }
 
         const id = this.idGenerator.generate();
