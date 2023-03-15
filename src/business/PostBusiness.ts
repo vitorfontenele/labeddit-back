@@ -286,7 +286,7 @@ export class PostBusiness {
         return output;
     }
 
-    public async deletePostById(input: DeletePostInputDTO) : Promise<void>{
+    public async deletePostById(input: DeletePostInputDTO) : Promise<string>{
         const { id , token } = input;
 
         const payload = this.tokenManager.getPayload(token);
@@ -305,5 +305,9 @@ export class PostBusiness {
         }
 
         await this.postDatabase.deletePostById(id);
+
+        const output = "Post deletado com sucesso";
+
+        return output;
     }
 }
