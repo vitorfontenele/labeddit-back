@@ -1,5 +1,4 @@
 import { UserBusiness } from "../../src/business/UserBusiness";
-import { BadRequestError } from "../../src/errors/BadRequestError";
 import { HashManagerMock } from "../mocks/HashManagerMock";
 import { IdGeneratorMock } from "../mocks/IdGeneratorMock";
 import { TokenManagerMock } from "../mocks/TokenManagerMock";
