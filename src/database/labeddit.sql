@@ -9,6 +9,7 @@ CREATE TABLE users(
     username TEXT UNIQUE NOT NULL,
     email TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
+    receive_emails NUMBER NOT NULL,
     role TEXT NOT NULL,
     created_at TEXT NOT NULL
 );

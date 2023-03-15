@@ -89,7 +89,7 @@ export class UserBusiness {
         const role = USER_ROLES.NORMAL;
         const hashedPassword = await this.hashManager.hash(password);
 
-        const newUser = new User (id, username, email, hashedPassword, receiveEmails, role, createdAt);
+        const newUser = new User (id, username, email, hashedPassword, Number(receiveEmails), role, createdAt);
 
         const tokenPayload : TokenPayload = {
             id: newUser.getId(),

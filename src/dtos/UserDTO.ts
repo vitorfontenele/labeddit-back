@@ -7,7 +7,7 @@ export interface CreateUserInputDTO {
     username: string
     email: string
     password: string
-    receiveEmails: number
+    receiveEmails: boolean
 }
 
 export interface CreateUserOutputDTO {
@@ -100,8 +100,8 @@ export class UserDTO {
             throw new BadRequestError("'password' precisa ser uma string");
         }
 
-        if (typeof receiveEmails !== "number"){
-            throw new BadRequestError("'receiveEmails' precisa ser um number");
+        if (typeof receiveEmails !== "boolean"){
+            throw new BadRequestError("'receiveEmails' precisa ser um boolean");
         }
 
         const result : CreateUserInputDTO = {
