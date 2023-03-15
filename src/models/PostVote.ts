@@ -1,8 +1,8 @@
-export class VotesPosts {
+export class PostVote {
     constructor(
        private userId: string,
        private postId: string,
-       private upvote = 0
+       private vote = 0
     ){}
 
     public getUserId() : string {
@@ -21,11 +21,11 @@ export class VotesPosts {
         this.postId = value;
     }
 
-    public getUpvote() : number {
-        return this.upvote;
+    public getVote() : number {
+        return this.vote;
     }
     
-    public setUpvote(value: number) : void {
-        this.upvote = value;
+    public setVote(value: number) : void {
+        this.vote = value;
     }
 }

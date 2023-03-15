@@ -18,10 +18,10 @@ export interface PostDB {
     updated_at: string
 }
 
-export interface VotesPostsDB {
+export interface PostVoteDB {
     user_id: string
     post_id: string
-    upvote: number
+    vote: number
 }
 
 export interface VotesCommentsDB {
