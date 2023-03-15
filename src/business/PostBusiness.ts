@@ -143,7 +143,7 @@ export class PostBusiness {
         return output;
     }
 
-    public async createPost(input : CreatePostInputDTO) : Promise<void>{
+    public async createPost(input : CreatePostInputDTO) : Promise<string>{
         const { content , token } = input;
 
         const payload = this.tokenManager.getPayload(token);
@@ -172,6 +172,10 @@ export class PostBusiness {
 
         const newPostDB = newPost.toDBModel();
         await this.postDatabase.createPost(newPostDB);
+
+        const output = "Post criado com sucesso";
+        
+        return output;
     }
 
     public async updatePostVoteById(input : EditPostVoteInputDTO) : Promise<void>{
