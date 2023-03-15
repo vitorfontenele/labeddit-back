@@ -2,7 +2,7 @@ import { PostDatabaseMock } from "../mocks/PostDatabaseMock";
 import { UserDatabaseMock } from "../mocks/UserDatabaseMock";
 import { CommentDatabaseMock } from "../mocks/CommentDatabaseMock";
 import { PostVotesDatabaseMock } from "../mocks/PostVotesDatabaseMock";
-import { CreatePostInputDTO, GetPostVoteInputDTO, PostDTO } from "../../src/dtos/PostDTO";
+import { CreatePostInputDTO , PostDTO } from "../../src/dtos/PostDTO";
 import { IdGeneratorMock } from "../mocks/IdGeneratorMock";
 import { TokenManagerMock } from "../mocks/TokenManagerMock";
 import { PostBusiness} from "../../src/business/PostBusiness";

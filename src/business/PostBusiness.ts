@@ -178,7 +178,7 @@ export class PostBusiness {
         return output;
     }
 
-    public async updatePostVoteById(input : EditPostVoteInputDTO) : Promise<void>{
+    public async updatePostVoteById(input : EditPostVoteInputDTO) : Promise<string>{
         const { id , token } = input;
         const updatedVote = input.vote;
 
@@ -281,6 +281,9 @@ export class PostBusiness {
 
         const updatedPostDB = updatedPost.toDBModel();
         await this.postDatabase.updatePostById(updatedPostDB, postId);
+
+        const output = "Vote atualizado com sucesso";
+        return output;
     }
 
     public async deletePostById(input: DeletePostInputDTO) : Promise<void>{
