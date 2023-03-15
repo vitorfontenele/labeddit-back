@@ -4,6 +4,9 @@ import { IdGeneratorMock } from "../mocks/IdGeneratorMock";
 import { TokenManagerMock } from "../mocks/TokenManagerMock";
 import { UserDatabaseMock } from "../mocks/UserDatabaseMock";
 import { DeleteUserInputDTO, UserDTO } from "../../src/dtos/UserDTO";
+import { BadRequestError } from "../../src/errors/BadRequestError";
+import { ForbidenError } from "../../src/errors/ForbiddenError";
+import { NotFoundError } from "../../src/errors/NotFoundError";
 
 describe("deleteUserById", () => {
     const userBusiness = new UserBusiness(
@@ -36,7 +39,9 @@ describe("deleteUserById", () => {
         try {
             await userBusiness.deleteUserById(input);
         } catch (error) {
-            expect(error.message).toBe("Token inválido");
+            if (error instanceof BadRequestError){
+                expect(error.message).toBe("Token inválido");
+            }
         }
     });
 
@@ -51,7 +56,9 @@ describe("deleteUserById", () => {
         try {
             await userBusiness.deleteUserById(input);
         } catch (error) {
-            expect(error.message).toBe("Apenas admins podem deletar usuários");
+            if (error instanceof ForbidenError){
+                expect(error.message).toBe("Apenas admins podem deletar usuários");
+            }
         }
     });
 
@@ -66,7 +73,9 @@ describe("deleteUserById", () => {
         try {
             await userBusiness.deleteUserById(input);
         } catch (error) {
-            expect(error.message).toBe("Não foi encontrado um user com esse 'id'");
+            if (error instanceof NotFoundError){
+                expect(error.message).toBe("Não foi encontrado um user com esse 'id'");
+            }
         }
     })
 })

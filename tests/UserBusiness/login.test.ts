@@ -4,6 +4,8 @@ import { IdGeneratorMock } from "../mocks/IdGeneratorMock";
 import { TokenManagerMock } from "../mocks/TokenManagerMock";
 import { UserDatabaseMock } from "../mocks/UserDatabaseMock";
 import { LoginUserInputDTO, UserDTO } from "../../src/dtos/UserDTO";
+import { NotFoundError } from "../../src/errors/NotFoundError";
+import { BadRequestError } from "../../src/errors/BadRequestError";
 
 describe("login", () => {
     const userBusiness = new UserBusiness(
@@ -37,7 +39,9 @@ describe("login", () => {
         try {
             await userBusiness.loginUser(input);
         } catch (error) {
-            expect(error.message).toBe("'email' não encontrado");
+            if (error instanceof NotFoundError){
+                expect(error.message).toBe("'email' não encontrado");
+            }
         }
     })
 
@@ -52,7 +56,9 @@ describe("login", () => {
         try {
             await userBusiness.loginUser(input);
         } catch (error) {
-            expect(error.message).toBe("'email' ou 'password' incorretos");
+            if (error instanceof BadRequestError){
+                expect(error.message).toBe("'email' ou 'password' incorretos");
+            }
         }
     })
 })

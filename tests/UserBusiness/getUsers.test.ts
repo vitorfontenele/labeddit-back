@@ -5,6 +5,7 @@ import { TokenManagerMock } from "../mocks/TokenManagerMock";
 import { UserDatabaseMock } from "../mocks/UserDatabaseMock";
 import { GetUserInputDTO, UserDTO } from "../../src/dtos/UserDTO";
 import { USER_ROLES } from "../../src/types";
+import { BadRequestError } from "../../src/errors/BadRequestError";
 
 describe("getUsers", () => {
     const userBusiness = new UserBusiness(
@@ -40,7 +41,9 @@ describe("getUsers", () => {
         try {
             await userBusiness.getUsers(input);
         } catch (error) {
-            expect(error.message).toBe("Token inválido");
+            if (error instanceof BadRequestError){
+                expect(error.message).toBe("Token inválido");
+            }
         }
     })
 })

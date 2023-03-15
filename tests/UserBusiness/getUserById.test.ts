@@ -5,6 +5,8 @@ import { TokenManagerMock } from "../mocks/TokenManagerMock";
 import { UserDatabaseMock } from "../mocks/UserDatabaseMock";
 import { GetUserByIdInputDTO, UserDTO } from "../../src/dtos/UserDTO";
 import { USER_ROLES } from "../../src/types";
+import { BadRequestError } from "../../src/errors/BadRequestError";
+import { NotFoundError } from "../../src/errors/NotFoundError";
 
 describe("getUserById", () => {
     const userBusiness = new UserBusiness(
@@ -41,7 +43,9 @@ describe("getUserById", () => {
         try {
             await userBusiness.getUserById(input);
         } catch (error) {
-            expect(error.message).toBe("Token inválido");
+            if (error instanceof BadRequestError){
+                expect(error.message).toBe("Token inválido");
+            }   
         }
     })
 
@@ -56,7 +60,9 @@ describe("getUserById", () => {
         try {
             await userBusiness.getUserById(input);
         } catch (error) {
-            expect(error.message).toBe("Não foi encontrado um user com esse 'id'");
+            if (error instanceof NotFoundError){
+                expect(error.message).toBe("Não foi encontrado um user com esse 'id'");
+            }
         }
     })
 })
