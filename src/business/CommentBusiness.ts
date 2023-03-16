@@ -81,7 +81,7 @@ export class CommentBusiness{
         return output;
     }
 
-    public async createComment(input : CreateCommentInputDTO) : Promise<void>{
+    public async createComment(input : CreateCommentInputDTO) : Promise<string>{
         const { content , token , postId } = input;
 
         const payload = this.tokenManager.getPayload(token);
@@ -109,9 +109,12 @@ export class CommentBusiness{
 
         const newCommentDB = newComment.toDBModel();
         await this.commentDatabase.createComment(newCommentDB);
+
+        const output = "Comment criado com sucesso";
+        return output;
     }
 
-    public async updateCommentVoteById(input: EditCommentVoteInputDTO) : Promise<void>{
+    public async updateCommentVoteById(input: EditCommentVoteInputDTO) : Promise<string>{
         const { id , token } = input;
         const updatedVote = input.vote;
 
@@ -213,5 +216,8 @@ export class CommentBusiness{
 
         const updatedCommentDB = updatedComment.toDBModel();
         await this.commentDatabase.updateCommentById(updatedCommentDB, commentId);
+
+        const output = "Vote do comment atualizado com sucesso";
+        return output;
     }
 }
