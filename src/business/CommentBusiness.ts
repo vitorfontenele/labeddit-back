@@ -1,15 +1,16 @@
 import { CommentDatabase } from "../database/CommentDatabase";
 import { UserDatabase } from "../database/UserDatabase";
 import { CommentVotesDatabase } from "../database/CommentVotesDatabase";
-import { CommentDTO, CreateCommentInputDTO, EditCommentVoteInputDTO, GetCommentInputDTO, GetCommentOutputDTO, GetCommentVoteInputDTO } from "../dtos/CommentDTO";
+import { CommentDTO, CreateCommentInputDTO, DeleteCommentInputDTO, EditCommentInputDTO, EditCommentVoteInputDTO, GetCommentByIdInputDTO, GetCommentInputDTO, GetCommentOutputDTO, GetCommentVoteInputDTO } from "../dtos/CommentDTO";
 import { BadRequestError } from "../errors/BadRequestError";
 import { NotFoundError } from "../errors/NotFoundError";
 import { Comment } from "../models/Comment";
 import { CommentVote } from "../models/CommentVote";
 import { IdGenerator } from "../services/IdGenerator";
 import { TokenManager } from "../services/TokenManager";
-import { UserDB, CommentVoteDB } from "../types";
+import { UserDB, CommentVoteDB, USER_ROLES } from "../types";
 import { PostDatabase } from "../database/PostDatabase";
+import { ForbidenError } from "../errors/ForbiddenError";
 
 export class CommentBusiness{
     constructor(
@@ -56,6 +57,38 @@ export class CommentBusiness{
                 username: user.username
             }
         }
+
+        return output;
+    }
+
+    public async getCommentById(input : GetCommentByIdInputDTO) : Promise<GetCommentOutputDTO> {
+        const { id , token } = input;
+
+        const payload = this.tokenManager.getPayload(token);
+        if (payload === null){
+            throw new BadRequestError("Token inválido");
+        }
+
+        const commentDB = await this.commentDatabase.findCommentById(id);
+        if (!commentDB){
+            throw new NotFoundError("Não foi encontrado um comment com esse 'id'");
+        }
+
+        const comment = new Comment(
+            commentDB.id,
+            commentDB.content,
+            commentDB.upvotes,
+            commentDB.downvotes,
+            commentDB.created_at,
+            commentDB.updated_at,
+            {
+                id: payload.id,
+                username: payload.username
+            },
+            commentDB.post_id
+        )
+
+        const output = this.commentDTO.getCommentOutput(comment);
 
         return output;
     }
@@ -118,6 +151,47 @@ export class CommentBusiness{
         await this.commentDatabase.createComment(newCommentDB);
 
         const output = "Comment criado com sucesso";
+        return output;
+    }
+
+    public async updateCommentById(input: EditCommentInputDTO) : Promise<string>{
+        const { content , id , token } = input;
+
+        const payload = this.tokenManager.getPayload(token);
+        if (payload === null){
+            throw new BadRequestError("Token inválido");
+        }
+
+        const commentDB = await this.commentDatabase.findCommentById(id);
+        if (!commentDB){
+            throw new NotFoundError("Não foi encontrado um comment com esse 'id'");
+        }
+
+        if (payload.role !== USER_ROLES.ADMIN){
+            throw new ForbidenError("Somente admins podem editar posts");
+        }
+
+        const updatedAt = (new Date()).toISOString();
+
+        const updatedComment = new Comment(
+            id,
+            content,
+            commentDB.upvotes,
+            commentDB.downvotes,
+            commentDB.created_at,
+            updatedAt,
+            {
+                id: payload.id,
+                username: payload.username
+            },
+            commentDB.post_id
+        );
+
+        const updatedCommentDB = updatedComment.toDBModel();
+        await this.commentDatabase.updateCommentById(updatedCommentDB, id);
+
+        const output = "Comment atualizado com sucesso";
+
         return output;
     }
 
@@ -225,6 +299,31 @@ export class CommentBusiness{
         await this.commentDatabase.updateCommentById(updatedCommentDB, commentId);
 
         const output = "Vote do comment atualizado com sucesso";
+        return output;
+    }
+
+    public async deleteCommentById(input : DeleteCommentInputDTO) : Promise<string> {
+        const { id , token } = input;
+
+        const payload = this.tokenManager.getPayload(token);
+        if (payload === null){
+            throw new BadRequestError("Token inválido");
+        }
+
+        const commentDB = await this.commentDatabase.findCommentById(id);
+        if (!commentDB){
+            throw new NotFoundError("Não existe um comment com esse id");
+        }
+
+        // Somente admins poderão deletar comments
+        if (payload.role !== USER_ROLES.ADMIN){
+            throw new ForbidenError("Você não tem permissão para realizar essa ação");
+        }
+
+        await this.commentDatabase.deleteCommentById(id);
+
+        const output = "Comment deletado com sucesso";
+
         return output;
     }
 }
