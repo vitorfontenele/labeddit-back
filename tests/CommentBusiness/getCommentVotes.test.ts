@@ -1,5 +1,6 @@
 import { CommentBusiness } from "../../src/business/CommentBusiness";
 import { CommentDatabaseMock } from "../mocks/CommentDatabaseMock";
+import { PostDatabaseMock } from "../mocks/PostDatabaseMock";
 import { UserDatabaseMock } from "../mocks/UserDatabaseMock";
 import { CommentVotesDatabaseMock } from "../mocks/CommentVotesDatabaseMock";
 import { CommentDTO, GetCommentVoteInputDTO } from "../../src/dtos/CommentDTO";
@@ -10,6 +11,7 @@ import { BadRequestError } from "../../src/errors/BadRequestError";
 describe("getCommentVotes", () => {
     const commentBusiness = new CommentBusiness(
         new CommentDatabaseMock(),
+        new PostDatabaseMock(),
         new UserDatabaseMock(),
         new CommentVotesDatabaseMock(),
         new CommentDTO(),

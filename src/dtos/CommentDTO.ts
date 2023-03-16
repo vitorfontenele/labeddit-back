@@ -12,6 +12,11 @@ export interface GetCommentInputDTO {
     token: string
 }
 
+export interface GetCommentByIdInputDTO {
+    token: string
+    id: string
+}
+
 export interface GetCommentOutputDTO {
     id: string,
     content: string,
@@ -24,6 +29,12 @@ export interface GetCommentOutputDTO {
         username: string
     },
     postId: string
+}
+
+export interface EditCommentInputDTO {
+    content: string
+    id: string
+    token: string
 }
 
 export interface EditCommentVoteInputDTO {
@@ -42,6 +53,11 @@ export interface GetCommentVoteOutputDTO {
     vote: number
 }
 
+export interface DeleteCommentInputDTO {
+    token : string
+    id : string
+}
+
 export class CommentDTO {
     getCommentInput = (token: unknown) : GetCommentInputDTO => {
         if (typeof token !== "string"){
@@ -49,6 +65,20 @@ export class CommentDTO {
         }
 
         const result : GetCommentInputDTO = {
+            token
+        }
+
+        return result;
+    }
+
+    getCommentByIdInput = (token: unknown, id: string) : GetCommentByIdInputDTO => {
+        // id string pois path param
+        if (typeof token !== "string"){
+            throw new BadRequestError ("Token inválido"); 
+        }
+
+        const result : GetCommentByIdInputDTO = {
+            id,
             token
         }
 
@@ -92,7 +122,26 @@ export class CommentDTO {
         return result;
     }
 
-    editCommentVoteInput = (id: string, vote: unknown, token: unknown) => {
+    editCommentInput = (token: unknown, content: unknown, id: string) : EditCommentInputDTO => {
+        // id é string pois path param
+        if (typeof token !== "string"){
+            throw new BadRequestError("Token inválido");
+        }
+
+        if (typeof content !== "string"){
+            throw new BadRequestError("'content' deve ser string");
+        }
+
+        const result : EditCommentInputDTO = {
+            id,
+            token,
+            content
+        };
+
+        return result;
+    }
+
+    editCommentVoteInput = (id: string, vote: unknown, token: unknown) : EditCommentVoteInputDTO => {
         // id é string pois é path param
 
         if (typeof vote !== "boolean"){
@@ -129,6 +178,20 @@ export class CommentDTO {
             commentId: commentVote.getCommentId(),
             vote: commentVote.getVote()
         };
+
+        return result;
+    }
+
+    deleteCommentInput = (token: unknown, id: string) : DeleteCommentInputDTO => {
+        // id é string pois path param
+        if (typeof token !== "string"){
+            throw new BadRequestError("Token inválido");
+        }
+
+        const result : DeleteCommentInputDTO = {
+            id,
+            token
+        }
 
         return result;
     }

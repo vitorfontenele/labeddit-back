@@ -3,13 +3,13 @@ import { CommentDatabaseMock } from "../mocks/CommentDatabaseMock";
 import { PostDatabaseMock } from "../mocks/PostDatabaseMock";
 import { UserDatabaseMock } from "../mocks/UserDatabaseMock";
 import { CommentVotesDatabaseMock } from "../mocks/CommentVotesDatabaseMock";
-import { CommentDTO, EditCommentVoteInputDTO } from "../../src/dtos/CommentDTO";
+import { CommentDTO, GetCommentByIdInputDTO } from "../../src/dtos/CommentDTO";
 import { IdGeneratorMock } from "../mocks/IdGeneratorMock";
 import { TokenManagerMock } from "../mocks/TokenManagerMock";
 import { BadRequestError } from "../../src/errors/BadRequestError";
 import { NotFoundError } from "../../src/errors/NotFoundError";
 
-describe("updateCommentVoteById", () => {
+describe("getCommentById", () => {
     const commentBusiness = new CommentBusiness(
         new CommentDatabaseMock(),
         new PostDatabaseMock(),
@@ -20,29 +20,27 @@ describe("updateCommentVoteById", () => {
         new TokenManagerMock()
     );
 
-    test("Atualiza vote do comment com sucesso", async () => {
-        const input : EditCommentVoteInputDTO = {
-            id: "id-comment-1",
-            vote: true,
-            token: "token-mock-normal"
+    test("Retorna um comentário correspondente a um id", async () => {
+        const input : GetCommentByIdInputDTO = {
+            token: "token-mock-normal",
+            id: "id-comment-1"
         }
 
-        const result = await commentBusiness.updateCommentVoteById(input);
+        const result = await commentBusiness.getCommentById(input);
 
-        expect(result).toBe("Vote do comment atualizado com sucesso");
+        expect(result.id).toBe("id-comment-1");
     })
 
     test("Token não é válido", async () => {
         expect.assertions(1);
 
-        const input : EditCommentVoteInputDTO = {
-            id: "id-comment-1",
-            vote: true,
-            token: "invalid-token"
+        const input : GetCommentByIdInputDTO = {
+            token: "invalid-token",
+            id: "id-comment-1"
         }
 
         try {
-            await commentBusiness.updateCommentVoteById(input);
+            await commentBusiness.getCommentById(input);
         } catch (error) {
             if (error instanceof BadRequestError){
                 expect(error.message).toBe("Token inválido");
@@ -50,21 +48,20 @@ describe("updateCommentVoteById", () => {
         }
     })
 
-    test("Não há comentário com esse id", async () => {
+    test("Não há um comentário com esse id", async () => {
         expect.assertions(1);
 
-        const input : EditCommentVoteInputDTO = {
-            id: "not-found-id",
-            vote: true,
-            token: "token-mock-normal"
+        const input : GetCommentByIdInputDTO = {
+            token: "token-mock-normal",
+            id: "not-found-id"
         }
 
         try {
-            await commentBusiness.updateCommentVoteById(input);
+            await commentBusiness.getCommentById(input);
         } catch (error) {
-            if (error instanceof NotFoundError) {
+            if (error instanceof NotFoundError){
                 expect(error.message).toBe("Não foi encontrado um comment com esse 'id'");
             }
         }
     })
-})
+});
