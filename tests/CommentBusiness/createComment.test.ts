@@ -7,6 +7,7 @@ import { CommentDTO, CreateCommentInputDTO } from "../../src/dtos/CommentDTO";
 import { IdGeneratorMock } from "../mocks/IdGeneratorMock";
 import { TokenManagerMock } from "../mocks/TokenManagerMock";
 import { BadRequestError } from "../../src/errors/BadRequestError";
+import { NotFoundError } from "../../src/errors/NotFoundError";
 
 describe("createComment", () => {
     const commentBusiness = new CommentBusiness(
@@ -45,6 +46,24 @@ describe("createComment", () => {
         } catch (error) {
             if (error instanceof BadRequestError){
                 expect(error.message).toBe("Token inválido");
+            }
+        }
+    })
+
+    test("Não há um post com esse id", async () => {
+        expect.assertions(1);
+
+        const input : CreateCommentInputDTO = {
+            content: "The brown fox jumps over the lazy dog",
+            token: "token-mock-normal",
+            postId: "not-found-id"
+        };
+
+        try {
+            await commentBusiness.createComment(input);
+        } catch (error) {
+            if (error instanceof NotFoundError){
+                expect(error.message).toBe("Não existe um post com esse 'id'");
             }
         }
     })
