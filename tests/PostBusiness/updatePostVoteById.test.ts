@@ -20,9 +20,45 @@ describe("updatePostVoteById", () => {
         new TokenManagerMock()
     );
 
-    test("Atualizar vote de um post", async () => {
+    test("Atualizar vote de um post 1", async () => {
         const input : EditPostVoteInputDTO = {
             token: "token-mock-normal",
+            vote: true,
+            id: "id-post-1"
+        }
+
+        const result = await postBusiness.updatePostVoteById(input);
+
+        expect(result).toBe("Vote atualizado com sucesso");
+    })
+
+    test("Atualizar vote de um post 2", async () => {
+        const input : EditPostVoteInputDTO = {
+            token: "token-mock-normal",
+            vote: false,
+            id: "id-post-1"
+        }
+
+        const result = await postBusiness.updatePostVoteById(input);
+
+        expect(result).toBe("Vote atualizado com sucesso");
+    })
+
+    test("Atualizar vote de um post 3", async () => {
+        const input : EditPostVoteInputDTO = {
+            token: "token-mock-admin",
+            vote: true,
+            id: "id-post-1"
+        }
+
+        const result = await postBusiness.updatePostVoteById(input);
+
+        expect(result).toBe("Vote atualizado com sucesso");
+    })
+
+    test("Atualizar vote de um post 4", async () => {
+        const input : EditPostVoteInputDTO = {
+            token: "token-mock-admin",
             vote: false,
             id: "id-post-1"
         }

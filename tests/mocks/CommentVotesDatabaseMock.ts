@@ -14,7 +14,7 @@ export class CommentVotesDatabaseMock extends BaseDatabase {
             {
                 user_id: "id-mock-normal",
                 comment_id: "id-comment-2",
-                vote: 1
+                vote: 0
             }
         ]
     }
@@ -31,7 +31,7 @@ export class CommentVotesDatabaseMock extends BaseDatabase {
                 return {
                     user_id: "id-mock-normal",
                     comment_id: "id-comment-2",
-                    vote: 1
+                    vote: 0
                 }
             } else {
                 return undefined;

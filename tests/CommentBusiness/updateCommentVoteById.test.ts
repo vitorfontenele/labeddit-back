@@ -20,11 +20,47 @@ describe("updateCommentVoteById", () => {
         new TokenManagerMock()
     );
 
-    test("Atualiza vote do comment com sucesso", async () => {
+    test("Atualiza vote do comment com sucesso 1", async () => {
         const input : EditCommentVoteInputDTO = {
             id: "id-comment-1",
             vote: true,
             token: "token-mock-normal"
+        }
+
+        const result = await commentBusiness.updateCommentVoteById(input);
+
+        expect(result).toBe("Vote do comment atualizado com sucesso");
+    })
+
+    test("Atualiza vote do comment com sucesso 2", async () => {
+        const input : EditCommentVoteInputDTO = {
+            id: "id-comment-1",
+            vote: false,
+            token: "token-mock-normal"
+        }
+
+        const result = await commentBusiness.updateCommentVoteById(input);
+
+        expect(result).toBe("Vote do comment atualizado com sucesso");
+    })
+
+    test("Atualiza vote do comment com sucesso 3", async () => {
+        const input : EditCommentVoteInputDTO = {
+            id: "id-comment-1",
+            vote: true,
+            token: "token-mock-admin"
+        }
+
+        const result = await commentBusiness.updateCommentVoteById(input);
+
+        expect(result).toBe("Vote do comment atualizado com sucesso");
+    })
+
+    test("Atualiza vote do comment com sucesso 4", async () => {
+        const input : EditCommentVoteInputDTO = {
+            id: "id-comment-1",
+            vote: false,
+            token: "token-mock-admin"
         }
 
         const result = await commentBusiness.updateCommentVoteById(input);

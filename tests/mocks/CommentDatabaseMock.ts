@@ -21,8 +21,8 @@ export class CommentDatabaseMock extends BaseDatabase {
                 post_id: "id-post-2",
                 creator_id: "id-mock-admin",
                 content: "Hello World!",
-                upvotes: 1,
-                downvotes: 0,
+                upvotes: 0,
+                downvotes: 1,
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString()
             }
@@ -37,7 +37,7 @@ export class CommentDatabaseMock extends BaseDatabase {
                     post_id: "id-post-1",
                     creator_id: "id-mock-admin",
                     content: "Hello World!",
-                    upvotes: 0,
+                    upvotes: 1,
                     downvotes: 0,
                     created_at: new Date().toISOString(),
                     updated_at: new Date().toISOString()
@@ -49,7 +49,7 @@ export class CommentDatabaseMock extends BaseDatabase {
                     creator_id: "id-mock-admin",
                     content: "Hello World!",
                     upvotes: 0,
-                    downvotes: 0,
+                    downvotes: 1,
                     created_at: new Date().toISOString(),
                     updated_at: new Date().toISOString()
                 }

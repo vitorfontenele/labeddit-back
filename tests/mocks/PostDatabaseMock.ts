@@ -19,8 +19,8 @@ export class PostDatabaseMock extends BaseDatabase {
                 id: "id-post-2",
                 creator_id: "id-mock-normal",
                 content: "Hello world!",
-                upvotes: 1,
-                downvotes: 0,
+                upvotes: 0,
+                downvotes: 1,
                 created_at: new Date().toISOString(),
                 updated_at: new Date().toISOString()
             }
