@@ -78,7 +78,7 @@ describe("deleteCommentById", () => {
             await commentBusiness.deleteCommentById(input);
         } catch (error) {
             if (error instanceof ForbidenError){
-                expect(error.message).toBe("Comment deletado com sucesso");
+                expect(error.message).toBe("Você não tem permissão para realizar essa ação");
             }
         }
     });
