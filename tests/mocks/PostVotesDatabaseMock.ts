@@ -13,7 +13,7 @@ export class PostVotesDatabaseMock extends BaseDatabase {
         {
             user_id: "id-mock-admin",
             post_id: "id-post-2",
-            vote: 1
+            vote: 0
         }   
         ]
     }
@@ -30,7 +30,7 @@ export class PostVotesDatabaseMock extends BaseDatabase {
                 return {
                     user_id: "id-mock-admin",
                     post_id: "id-post-2",
-                    vote: 1
+                    vote: 0
                 }
             } else {
                 return undefined;

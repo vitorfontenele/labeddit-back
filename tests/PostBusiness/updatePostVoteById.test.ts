@@ -68,6 +68,18 @@ describe("updatePostVoteById", () => {
         expect(result).toBe("Vote atualizado com sucesso");
     })
 
+    test("Atualizar vote de um post 5", async () => {
+        const input : EditPostVoteInputDTO = {
+            token: "token-mock-admin",
+            vote: false,
+            id: "id-post-2"
+        }
+
+        const result = await postBusiness.updatePostVoteById(input);
+
+        expect(result).toBe("Vote atualizado com sucesso");
+    })
+
     test("Token não é válido", async () => {
         expect.assertions(1);
 

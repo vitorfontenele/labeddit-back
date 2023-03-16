@@ -46,6 +46,18 @@ describe("updateCommentVoteById", () => {
 
     test("Atualiza vote do comment com sucesso 3", async () => {
         const input : EditCommentVoteInputDTO = {
+            id: "id-comment-2",
+            vote: false,
+            token: "token-mock-normal"
+        }
+
+        const result = await commentBusiness.updateCommentVoteById(input);
+
+        expect(result).toBe("Vote do comment atualizado com sucesso");
+    })
+
+    test("Atualiza vote do comment com sucesso 4", async () => {
+        const input : EditCommentVoteInputDTO = {
             id: "id-comment-1",
             vote: true,
             token: "token-mock-admin"
@@ -56,7 +68,7 @@ describe("updateCommentVoteById", () => {
         expect(result).toBe("Vote do comment atualizado com sucesso");
     })
 
-    test("Atualiza vote do comment com sucesso 4", async () => {
+    test("Atualiza vote do comment com sucesso 5", async () => {
         const input : EditCommentVoteInputDTO = {
             id: "id-comment-1",
             vote: false,
