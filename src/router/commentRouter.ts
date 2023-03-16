@@ -7,10 +7,12 @@ import { CommentVotesDatabase } from "../database/CommentVotesDatabase";
 import { CommentDTO } from "../dtos/CommentDTO";
 import { IdGenerator } from "../services/IdGenerator";
 import { TokenManager } from "../services/TokenManager";
+import { PostDatabase } from "../database/PostDatabase";
 
 const commentController = new CommentController(
     new CommentBusiness(
         new CommentDatabase(),
+        new PostDatabase(),
         new UserDatabase(),
         new CommentVotesDatabase(),
         new CommentDTO(),

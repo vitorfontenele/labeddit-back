@@ -9,10 +9,12 @@ import { CommentVote } from "../models/CommentVote";
 import { IdGenerator } from "../services/IdGenerator";
 import { TokenManager } from "../services/TokenManager";
 import { UserDB, CommentVoteDB } from "../types";
+import { PostDatabase } from "../database/PostDatabase";
 
 export class CommentBusiness{
     constructor(
         private commentDatabase: CommentDatabase,
+        private postDatabase: PostDatabase,
         private userDatabase: UserDatabase,
         private commentVotesDatabase: CommentVotesDatabase,
         private commentDTO: CommentDTO,
@@ -87,6 +89,11 @@ export class CommentBusiness{
         const payload = this.tokenManager.getPayload(token);
         if (payload === null){
             throw new BadRequestError("Token inválido");
+        }
+
+        const postDB = await this.postDatabase.findPostById(postId);
+        if (!postDB){
+            throw new NotFoundError("Não existe um post com esse 'id'");
         }
 
         const id = this.idGenerator.generate();

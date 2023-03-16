@@ -1,5 +1,6 @@
 import { CommentBusiness } from "../../src/business/CommentBusiness";
 import { CommentDatabaseMock } from "../mocks/CommentDatabaseMock";
+import { PostDatabaseMock } from "../mocks/PostDatabaseMock";
 import { UserDatabaseMock } from "../mocks/UserDatabaseMock";
 import { CommentVotesDatabaseMock } from "../mocks/CommentVotesDatabaseMock";
 import { CommentDTO, EditCommentVoteInputDTO } from "../../src/dtos/CommentDTO";
@@ -11,6 +12,7 @@ import { NotFoundError } from "../../src/errors/NotFoundError";
 describe("updateCommentVoteById", () => {
     const commentBusiness = new CommentBusiness(
         new CommentDatabaseMock(),
+        new PostDatabaseMock(),
         new UserDatabaseMock(),
         new CommentVotesDatabaseMock(),
         new CommentDTO(),
