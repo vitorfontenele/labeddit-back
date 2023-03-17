@@ -22,6 +22,8 @@
 
 Back-End do projeto integrador da Labenu, o LabEddit.
 
+O repositório que contém o Front-End dessa aplicação é o [labeddit-front](https://github.com/vitorfontenele/labeddit-front).
+
 <p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
 
 ### Feito com
