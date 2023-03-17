@@ -12,6 +12,7 @@
     </li>
     <li><a href="#exemplos-de-requisições">Exemplos de Requisições</a></li>
     <li><a href="#cobertura-dos-testes">Cobertura dos testes</a></li>
+    <li><a href="#documentação-no-postman">Documentação no Postman</a></li>
     <li><a href="#contato">Contato</a></li>
   </ol>
 </details>
@@ -540,6 +541,15 @@ Com isso, obteve-se a seguinte cobertura para essa aplicação:
 <div align="center">
     <img src="test-coverage.png" alt="Cobertura dos testes">
 </div>
+
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
+
+<!-- Documentação no Postman -->
+## Documentação no Postman
+
+Basta seguir o link:
+
+- [Documentação no Postman](https://documenter.getpostman.com/view/24457509/2s93JzKzau)
 
 <p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
  
