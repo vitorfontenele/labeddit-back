@@ -306,3 +306,150 @@ Seguem exemplos de como utilizar a API criada neste projeto.
 // Response
 // status 200 OK
 ```
+
+### Comments
+
+#### Get all comments
+
+```typescript
+// Request
+// GET /comments
+// Headers:
+//   Authorization: <seu_token_de_acesso>
+// Response
+// status 200 OK
+[
+    {
+        "id": "557f630a-f80c-47c5-9d18-b083a34e7aef",
+        "content": "Depende muito de qual área você focar. Se você quer focar mais em dados, Python primeiro é melhor. Se quiser focar mais em Desenvolvimento Web, Javascript é melhor.",
+        "upvotes": 0,
+        "downvotes": 0,
+        "createdAt": "2023-03-17T04:03:17.624Z",
+        "updatedAt": "2023-03-17T04:03:17.624Z",
+        "creator": {
+            "id": "a3ee8f27-f424-40b0-9459-d7dca989bc4a",
+            "username": "juliaschmidt"
+        },
+        "postId": "3ed153dc-e908-4fe6-bc93-5e0b40a9ab26"
+    },
+    {...},
+    {
+        "id": "db507e1d-a6e6-49bb-8ec4-f9c91a2dded5",
+        "content": "A primeira vez que eu vi isso na minha vida demorei uma semana pra conseguir entender. XD",
+        "upvotes": 0,
+        "downvotes": 0,
+        "createdAt": "2023-03-17T04:11:26.752Z",
+        "updatedAt": "2023-03-17T04:11:26.752Z",
+        "creator": {
+            "id": "11d71798-f86f-4fd7-a48e-720151171fd5",
+            "username": "johntitor"
+        },
+        "postId": "63f3113f-ce65-41d0-9e73-b14e3f139915"
+    }
+]
+```
+
+#### Get Comment By Id
+
+```typescript
+// Request
+// path params = :id
+// GET /comments/557f630a-f80c-47c5-9d18-b083a34e7aef
+// Headers:
+//   Authorization: <seu_token_de_acesso>
+// Response
+// status 200 OK
+{
+    "id": "557f630a-f80c-47c5-9d18-b083a34e7aef",
+    "content": "Depende muito de qual área você focar. Se você quer focar mais em dados, Python primeiro é melhor. Se quiser focar mais em Desenvolvimento Web, Javascript é melhor.",
+    "upvotes": 0,
+    "downvotes": 0,
+    "createdAt": "2023-03-17T04:03:17.624Z",
+    "updatedAt": "2023-03-17T04:03:17.624Z",
+    "creator": {
+        "id": "a91ebf62-a55d-43e6-b6cd-9e1a6a2aed87",
+        "username": "alicegrassi"
+    },
+    "postId": "3ed153dc-e908-4fe6-bc93-5e0b40a9ab26"
+}
+```
+
+#### Get all comments votes
+
+```typescript
+// Request
+// GET /comments/votes
+// Headers:
+//   Authorization: <seu_token_de_acesso>
+// Response
+// status 200 OK
+[
+    {
+        "userId": "a3ee8f27-f424-40b0-9459-d7dca989bc4a",
+        "commentId": "265164e3-47bd-4227-b3e4-40c2e2726f83",
+        "vote": 1
+    },
+    {
+        "userId": "11d71798-f86f-4fd7-a48e-720151171fd5",
+        "commentId": "4099e536-2a6e-43f8-99a0-07a760b81d43",
+        "vote": 1
+    }
+]
+```
+
+#### Create post
+
+```typescript
+// Request
+// POST /comments
+// Headers:
+//   Authorization: <seu_token_de_acesso>
+// body JSON
+{
+    "content": "Se for aprender Desenvolvimento Front-End, é Javascript na certa!",
+    "postId": "3ed153dc-e908-4fe6-bc93-5e0b40a9ab26"
+}
+// Response
+// status 201 CREATED
+```
+
+#### Edit Comment Vote by Id
+```typescript
+// Request
+// path params = :id
+// PUT /comments/:id/vote
+// Headers:
+//   Authorization: <seu_token_de_acesso>
+// body JSON
+{
+    "vote": true
+}
+// Response
+// status 200 OK
+```
+
+#### Edit Comment By Id
+```typescript
+// Request
+// path params = :id
+// PUT /comments/:id
+// Headers:
+//   Authorization: <seu_token_de_acesso>
+// body JSON
+{
+    "content": "Python é uma linguagem cheia de recursos e muito fácil de aprender."
+}
+// Response
+// status 200 OK
+```
+
+#### Delete Comment By Id
+```typescript
+// Request
+// path params = :id
+// DELETE /comments/:id
+// Headers:
+//   Authorization: <seu_token_de_acesso>
+// Response
+// status 200 OK
+```
