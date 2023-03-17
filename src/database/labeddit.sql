@@ -86,8 +86,8 @@ CREATE TABLE comments (
     downvotes INTEGER NOT NULL,
     created_at TEXT NOT NULL,
     updated_at TEXT NOT NULL,
-    FOREIGN KEY (post_id) REFERENCES posts(id),
-    FOREIGN KEY (creator_id) REFERENCES users(id)
+    FOREIGN KEY (post_id) REFERENCES posts(id) ON DELETE CASCADE,
+    FOREIGN KEY (creator_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- query 4.3
@@ -102,8 +102,8 @@ CREATE TABLE comment_votes (
     user_id TEXT NOT NULL,
     comment_id TEXT NOT NULL,
     vote INTEGER NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (comment_id) REFERENCES comments(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE CASCADE
 );
 
 -- query 5.3

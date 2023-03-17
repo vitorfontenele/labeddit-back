@@ -21,6 +21,7 @@ const userController = new UserController(
 export const userRouter = express.Router();
 
 userRouter.get("/", userController.getUsers);
+userRouter.get("/verify-token/:token", userController.verifyToken);
 userRouter.get("/:id", userController.getUserById);
 userRouter.post("/signup", userController.createUser);
 userRouter.post("/login", userController.loginUser);
