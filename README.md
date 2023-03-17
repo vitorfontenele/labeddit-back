@@ -11,6 +11,7 @@
       </ul>
     </li>
     <li><a href="#exemplos-de-requisições">Exemplos de Requisições</a></li>
+    <li><a href="#cobertura-dos-testes">Cobertura dos testes</a></li>
     <li><a href="#contato">Contato</a></li>
   </ol>
 </details>
@@ -522,6 +523,23 @@ Seguem exemplos de como utilizar a API criada neste projeto.
 // Response
 // status 200 OK
 ```
+
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
+
+<!-- COBERTURA DOS TESTES -->
+## Cobertura dos testes
+
+A cobertura dos testes é obtida com o comando:
+
+```sh
+npm run test -- --collect-coverage
+```
+
+Com isso, obteve-se a seguinte cobertura para essa aplicação:
+
+<div align="center">
+    <img src="test-coverage.png" alt="Cobertura dos testes">
+</div>
 
 <p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
  
