@@ -62,6 +62,8 @@ Seguem exemplos de como utilizar a API criada neste projeto.
 ]
 ```
 
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
+
 #### Get User By Id
 
 ```typescript
@@ -79,6 +81,8 @@ Seguem exemplos de como utilizar a API criada neste projeto.
 }
 ```
 
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
+
 #### Verify token
 
 ```typescript
@@ -91,6 +95,8 @@ Seguem exemplos de como utilizar a API criada neste projeto.
     "isTokenValid": false
 }
 ```
+
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
 
 #### Create User
 ```typescript
@@ -111,6 +117,8 @@ Seguem exemplos de como utilizar a API criada neste projeto.
 }
 ```
 
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
+
 #### User Login
 ```typescript
 // Request
@@ -128,6 +136,8 @@ Seguem exemplos de como utilizar a API criada neste projeto.
 }
 ```
 
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
+
 #### Delete User By Id
 
 ```typescript
@@ -139,6 +149,9 @@ Seguem exemplos de como utilizar a API criada neste projeto.
 // Response
 // status 200 OK
 ```
+
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
+
 ### Posts
 
 #### Get all posts
@@ -213,6 +226,8 @@ Seguem exemplos de como utilizar a API criada neste projeto.
 ]
 ```
 
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
+
 #### Get Post By Id
 
 ```typescript
@@ -259,6 +274,8 @@ Seguem exemplos de como utilizar a API criada neste projeto.
 }
 ```
 
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
+
 #### Get all post votes
 ```typescript
 // Request
@@ -282,6 +299,8 @@ Seguem exemplos de como utilizar a API criada neste projeto.
 ]
 ```
 
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
+
 #### Create post
 ```typescript
 // Request
@@ -295,6 +314,8 @@ Seguem exemplos de como utilizar a API criada neste projeto.
 // Response
 // status 201 CREATED
 ```
+
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
 
 #### Edit Post Vote by Id
 ```typescript
@@ -311,6 +332,8 @@ Seguem exemplos de como utilizar a API criada neste projeto.
 // status 200 OK
 ```
 
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
+
 #### Edit Post By Id
 ```typescript
 // Request
@@ -326,6 +349,8 @@ Seguem exemplos de como utilizar a API criada neste projeto.
 // status 200 OK
 ```
 
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
+
 #### Delete Post By Id
 ```typescript
 // Request
@@ -336,6 +361,8 @@ Seguem exemplos de como utilizar a API criada neste projeto.
 // Response
 // status 200 OK
 ```
+
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
 
 ### Comments
 
@@ -379,6 +406,8 @@ Seguem exemplos de como utilizar a API criada neste projeto.
 ]
 ```
 
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
+
 #### Get Comment By Id
 
 ```typescript
@@ -404,6 +433,8 @@ Seguem exemplos de como utilizar a API criada neste projeto.
 }
 ```
 
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
+
 #### Get all comments votes
 
 ```typescript
@@ -427,6 +458,8 @@ Seguem exemplos de como utilizar a API criada neste projeto.
 ]
 ```
 
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
+
 #### Create comment
 
 ```typescript
@@ -443,6 +476,8 @@ Seguem exemplos de como utilizar a API criada neste projeto.
 // status 201 CREATED
 ```
 
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
+
 #### Edit Comment Vote by Id
 ```typescript
 // Request
@@ -458,6 +493,8 @@ Seguem exemplos de como utilizar a API criada neste projeto.
 // status 200 OK
 ```
 
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
+
 #### Edit Comment By Id
 ```typescript
 // Request
@@ -472,6 +509,8 @@ Seguem exemplos de como utilizar a API criada neste projeto.
 // Response
 // status 200 OK
 ```
+
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
 
 #### Delete Comment By Id
 ```typescript
