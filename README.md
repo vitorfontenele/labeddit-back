@@ -1,5 +1,35 @@
-# labeddit-back
-Back-End do projeto integrador Labenu, o LabEddit.
+<a name="readme-top"></a>
+
+<!-- Conteúdo -->
+<details>
+  <summary>Conteúdo</summary>
+  <ol>
+    <li>
+      <a href="#sobre-o-projeto">Sobre o projeto</a>
+      <ul>
+        <li><a href="#feito-com">Feito com</a></li>
+      </ul>
+    </li>
+    <li><a href="#exemplos-de-requisições">Exemplos de Requisições</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ol>
+</details>
+
+<!-- SOBRE O PROJETO -->
+## Sobre o projeto
+
+Back-End do projeto integrador da Labenu, o LabEddit.
+
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
+
+### Feito com
+
+* [![Typescript][typescript-shield]][typescript-url]
+* [![Node][node-shield]][node-url]
+* [![Express][express-shield]][express-url]
+* [![SQLite][sqlite-shield]][sqlite-url]
+
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
 
 <!-- EXEMPLOS DE REQUISIÇÕES -->
 ## Exemplos de Requisições
@@ -397,7 +427,7 @@ Seguem exemplos de como utilizar a API criada neste projeto.
 ]
 ```
 
-#### Create post
+#### Create comment
 
 ```typescript
 // Request
@@ -453,3 +483,27 @@ Seguem exemplos de como utilizar a API criada neste projeto.
 // Response
 // status 200 OK
 ```
+
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
+ 
+ <!-- CONTATO -->
+ ## Contato
+
+[![Github][github-shield]][github-url][![Linkedin][linkedin-shield]][linkedin-url]
+
+
+<p align="right">(<a href="#readme-top">voltar para o topo</a>)</p>
+
+<!-- MARKDOWN LINKS & IMAGES -->
+[typescript-shield]: https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white 
+[typescript-url]: https://www.typescriptlang.org/
+[node-shield]: https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white
+[node-url]: https://nodejs.org/
+[express-shield]: https://img.shields.io/badge/Express.js-404D59?style=for-the-badge
+[express-url]: https://www.npmjs.com/package/express
+[sqlite-shield]: https://img.shields.io/badge/SQLite-07405E?style=for-the-badge&logo=sqlite&logoColor=white
+[sqlite-url]: https://sqlite.org/
+[linkedin-shield]: https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white
+[linkedin-url]: https://www.linkedin.com/in/vitor-fontenele/
+[github-shield]: https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white
+[github-url]: https://github.com/vitorfontenele
